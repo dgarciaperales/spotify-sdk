@@ -13,10 +13,12 @@ import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -26,7 +28,7 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String CLIENT_ID = "1cb410517c4a439ab94ab01dce078e30";
+    public static final String CLIENT_ID = "336c8fa19efd4066947c6f2bf97d1003";
     public static final String REDIRECT_URI = "spotify-sdk://auth";
 
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create a request to get the user profile
         final Request request = new Request.Builder()
-                .url("https://api.spotify.com/v1/me/top/artists?limit=5")
+                .url("https://api.spotify.com/v1/me/top/tracks?limit=5")
                 .addHeader("Authorization", "Bearer " + mAccessToken)
                 .build();
 
@@ -143,7 +145,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 try {
                     final JSONObject jsonObject = new JSONObject(response.body().string());
-                    setTextAsync(jsonObject.toString(3), profileTextView);
+                    final JSONArray jsonArray = jsonObject.getJSONArray("items");
+                    ArrayList<String> str = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        str.add(jsonArray.getJSONObject(i).getString("name"));
+                    }
+                    setTextAsync(str.toString(), profileTextView);
                 } catch (JSONException e) {
                     Log.d("JSON", "Failed to parse data: " + e);
                     Toast.makeText(MainActivity.this, "Failed to parse data, watch Logcat for more details",
@@ -175,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
     private AuthorizationRequest getAuthenticationRequest(AuthorizationResponse.Type type) {
         return new AuthorizationRequest.Builder(CLIENT_ID, type, getRedirectUri().toString())
                 .setShowDialog(false)
-                .setScopes(new String[] { "user-top-read" }) // <--- Change the scope of your requested token here
+                .setScopes(new String[] { "user-top-read" })
                 .setCampaign("your-campaign-token")
                 .build();
 
