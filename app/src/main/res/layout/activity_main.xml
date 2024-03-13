@@ -40,12 +40,12 @@
             android:layout_margin="8dp"
             android:text="Request Code" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/response_text_view"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textSize="10sp"-->
-<!--            tools:text="Line 1\nLine 2\nLine 3" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/response_text_view"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:textSize="10sp"-->
+        <!--            tools:text="Line 1\nLine 2\nLine 3" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,13 +65,89 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/response_text_view"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="10sp"
-                tools:text="Line 1\nLine 2\nLine 3" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/response_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    tools:text="Line 1\nLine 2\nLine 3"
+                    />
+                <TextView
+                    android:id="@+id/past_wrapped"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/response_text_view"
+                    android:text="@string/past_wraps"
+                    android:textSize="20sp"
+                    />
+                <androidx.cardview.widget.CardView
+                    app:cardElevation="10dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="#FFFFFF"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:background="@color/white"
+                    android:layout_marginTop="8dp">
+                    <LinearLayout
+                        android:id="@+id/linear"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/light_green">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:id="@+id/wrapped_name"
+                            android:text="@string/wrapped_name"
+                            android:textSize="25sp"
+                            />
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+
         </ScrollView>
+<!--        have to make some 3 bottom controls outside of scroll-->
+        <LinearLayout
+            android:id="@+id/navigation_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/light_green"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" >
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/wraps"
+                android:textSize="30sp"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/feed"
+                android:textSize="30sp"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings"
+                android:textSize="30sp"/>
+        </LinearLayout>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
