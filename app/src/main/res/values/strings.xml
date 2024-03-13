@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">spotify-sdk</string>
+    <string name="past_wraps">Past Wraps</string>
+    <string name="wrapped_name">wrapped_name</string>
+    <string name="wraps">1</string>
+    <string name="feed">2</string>
+    <string name="settings">3</string>
+    <string name="spotify_wrapped_title">Spotify Wrapped</string>
+    <string name="create_account">Create Account</string>
+    <string name="log_in">Log In</string>
+    <string name="create_account_text">Create Account</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="register">register</string>
 </resources>
