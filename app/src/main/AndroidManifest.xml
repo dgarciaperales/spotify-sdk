@@ -28,6 +28,12 @@
             android:name=".LogInActivity"
             android:exported="false" />
         <activity
+            android:name=".GenerateWrapped"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayWrapped"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
