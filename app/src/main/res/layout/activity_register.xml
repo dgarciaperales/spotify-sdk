@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/username" />
+        android:text="@string/back" />
 
     <TextView
         android:id="@+id/create_account_text"
@@ -34,23 +34,23 @@
         app:layout_constraintTop_toBottomOf="@id/create_account_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/save_button_register">
+        app:layout_constraintBottom_toTopOf="@id/register">
 
-    <TextView
-        android:id="@+id/username_input_register"
+    <EditText
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enter_username"
+        android:hint="Enter your email here"
         android:textSize="16sp"/>
-    <TextView
-        android:id="@+id/password_input_register"
+    <EditText
+        android:id="@+id/password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enter_username"
+        android:hint="Enter your password here"
         android:textSize="16sp"/>
     </LinearLayout>
     <Button
-        android:id="@+id/save_button_register"
+        android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"

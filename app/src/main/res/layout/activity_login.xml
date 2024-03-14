@@ -13,13 +13,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/username" />
+        android:text="@string/back" />
 
     <TextView
         android:id="@+id/login_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_account_text"
+        android:text="Login"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/username_and_password_login"
         app:layout_constraintTop_toBottomOf="@id/back_button_login"
@@ -34,31 +34,29 @@
         app:layout_constraintTop_toBottomOf="@id/login_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/save_button_register">
+        app:layout_constraintBottom_toTopOf="@id/login">
 
-        <TextView
-            android:id="@+id/username_input_login"
+        <EditText
+            android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/enter_username"
+            android:hint="Enter your email here"
             android:textSize="16sp"/>
-        <TextView
-            android:id="@+id/password_input_login"
+        <EditText
+            android:id="@+id/password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/enter_username"
+            android:hint="Enter your password here"
             android:textSize="16sp"/>
     </LinearLayout>
     <Button
-        android:id="@+id/save_button_register"
+        android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/register"
+        android:text="Login"
         app:layout_constraintTop_toBottomOf="@id/username_and_password_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
