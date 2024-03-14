@@ -122,10 +122,10 @@ public class GenerateWrapped extends AppCompatActivity {
                                     tracksFragment.setArguments(bundle);
 
                                     // Start the DisplayWrapped activity
-                                    Intent intent = new Intent(GenerateWrapped.this, DisplayWrapped.class);
-                                    startActivity(intent);
+                                    // Intent intent = new Intent(GenerateWrapped.this, DisplayWrapped.class);
+                                    // startActivity(intent);
 
-                                    // setTextAsync("Top Tracks: " + tracks.toString() + "\nTop Artists: " + artists.toString(), profileTextView);
+                                    setTextAsync("Top Tracks: " + tracks.toString() + "\nTop Artists: " + artists.toString(), profileTextView);
                                 } catch (JSONException e) {
                                     Log.d("JSON", "Failed to parse artists: " + e);
                                     showToast("Failed to parse artists, watch Logcat for more details");
