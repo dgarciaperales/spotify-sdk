@@ -19,14 +19,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@string/login_with_spotify" />
+            android:text="@string/login_with_spotify"
+            android:textSize="17sp"/>
 
         <Button
             android:id="@+id/generate_wrapped_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@string/generate_new_wrapped" />
+            android:text="@string/generate_new_wrapped"
+            android:textSize="17sp"/>
 
         <androidx.cardview.widget.CardView
             app:cardElevation="10dp"
@@ -62,8 +64,8 @@
     <LinearLayout
         android:id="@+id/navigation_buttons"
         android:backgroundTint="@color/grey"
-        android:layout_width="410dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         android:background="@color/light_green"
         android:padding="16dp"
@@ -72,8 +74,24 @@
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ImageButton
+            android:id="@+id/wrapped_btn"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:src="@drawable/home"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/home_description"/>
+
+        <ImageButton
+            android:id="@+id/feed_btn"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:src="@drawable/feed"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/feed_description" />
+
+        <ImageButton
             android:id="@+id/settings_btn"
-            android:layout_width="48dp"
+            android:layout_width="125dp"
             android:layout_height="48dp"
             android:src="@drawable/setting"
             android:scaleType="fitCenter"
