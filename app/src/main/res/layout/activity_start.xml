@@ -29,15 +29,17 @@
         android:orientation="vertical">
     <Button
         android:id="@+id/create_account_button"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:text="@string/create_account" />
+        android:text="@string/create_account"
+        android:textSize="16sp"/>
 
     <Button
         android:id="@+id/log_in_button"
-        android:layout_width="wrap_content"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:text="@string/log_in" />
+        android:text="@string/log_in"
+        android:textSize="16sp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
