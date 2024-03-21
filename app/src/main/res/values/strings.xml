@@ -19,6 +19,7 @@
     <string name="update_profile">Update Profile</string>
     <string name="delete_account">Delete Account</string>
     <string name="log_out">Log Out</string>
+    <string name="spotify_wrapped">Spotify Wrapped</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>
