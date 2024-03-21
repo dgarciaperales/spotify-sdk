@@ -19,7 +19,7 @@
     <string name="update_profile">Update Profile</string>
     <string name="delete_account">Delete Account</string>
     <string name="log_out">Log Out</string>
-    <string name="spotify_wrapped">Spotify Wrapped</string>
+    <string name="spotify_wrapped">Wrapped Feed</string>
     <string name="settings_description">Settings</string>
     <string name="home_description">home</string>
     <string name="feed_description">feed</string>
