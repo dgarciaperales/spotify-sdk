@@ -12,7 +12,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="enter_username">Enter Username</string>
-    <string name="register">register</string>
+    <string name="register">Register</string>
     <string name="back">Back</string>
     <string name="generate_new_wrapped">Generate New Wrapped</string>
     <string name="login_with_spotify">Login with Spotify</string>
