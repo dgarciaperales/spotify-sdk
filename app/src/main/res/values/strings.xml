@@ -14,13 +14,16 @@
     <string name="enter_username">Enter Username</string>
     <string name="register">register</string>
     <string name="back">Back</string>
-    <string name="generate_new_wrapped">Generate new Wrapped</string>
+    <string name="generate_new_wrapped">Generate New Wrapped</string>
     <string name="login_with_spotify">Login with Spotify</string>
     <string name="update_profile">Update Profile</string>
     <string name="delete_account">Delete Account</string>
     <string name="log_out">Log Out</string>
     <string name="spotify_wrapped">Spotify Wrapped</string>
     <string name="settings_description">Settings</string>
+    <string name="home_description">home</string>
+    <string name="feed_description">feed</string>
+    <string name="settings_title">Settings</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>
