@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ImageButton;
+import android.view.View;
 
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
@@ -44,6 +46,22 @@ public class MainActivity extends AppCompatActivity {
                 showToast("Error: Please log in with Spotify first.");
             }
         });
+
+
+        //navigation to settings page
+        ImageButton settingsButton = findViewById(R.id.settings_btn);
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
+
+        //navigation to feed page
+        ImageButton feedButton = findViewById(R.id.feed_btn);
+        feedButton.setOnClickListener( v -> {
+            Intent intent = new Intent(MainActivity.this, FeedActivity.class);
+            startActivity(intent);
+        });
+
     }
 
     private void showToast(String message) {
