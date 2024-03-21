@@ -29,5 +29,14 @@ public class SettingsActivity extends AppCompatActivity {
             Intent intent = new Intent(SettingsActivity.this, FeedActivity.class);
             startActivity(intent);
         });
+
+
+        //log out of account --> navigates to first page StartActivity
+        Button logOut = findViewById(R.id.log_out);
+        logOut.setOnClickListener( v -> {
+            Intent intent = new Intent(SettingsActivity.this, StartActivity.class);
+            startActivity(intent);
+        });
     }
+
 }
