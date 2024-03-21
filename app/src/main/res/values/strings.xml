@@ -6,7 +6,7 @@
     <string name="feed">2</string>
     <string name="settings">3</string>
     <string name="spotify_wrapped_title">Spotify Wrapped</string>
-    <string name="create_account">Create Account</string>
+    <string name="create_account">Register</string>
     <string name="log_in">Log In</string>
     <string name="create_account_text">Create Account</string>
     <string name="username">Username</string>
@@ -20,6 +20,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="log_out">Log Out</string>
     <string name="spotify_wrapped">Spotify Wrapped</string>
+    <string name="settings_description">Settings</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>
