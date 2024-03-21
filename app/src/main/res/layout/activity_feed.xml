@@ -12,9 +12,45 @@
         android:layout_height="40dp"
         android:background="@color/grey"
         android:text="@string/spotify_wrapped"
-        android:textSize="20sp"
+        android:textSize="28sp"
         android:textAlignment="center"
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <LinearLayout
+        android:id="@+id/navigation_buttons"
+        android:backgroundTint="@color/grey"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:background="@color/light_green"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageButton
+            android:id="@+id/wrapped_btn"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:src="@drawable/home"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/home_description"/>
+
+        <ImageButton
+            android:id="@+id/feed_btn"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:src="@drawable/feed"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/feed_description" />
+
+        <ImageButton
+            android:id="@+id/settings_btn"
+            android:layout_width="125dp"
+            android:layout_height="48dp"
+            android:src="@drawable/setting"
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/settings_description"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
