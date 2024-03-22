@@ -14,7 +14,7 @@
     <string name="enter_username">Enter Username</string>
     <string name="register">Register</string>
     <string name="back">Back</string>
-    <string name="generate_new_wrapped">Generate New Wrapped</string>
+    <string name="generate_new_wrapped">Generate Wrapped</string>
     <string name="login_with_spotify">Login with Spotify</string>
     <string name="update_profile">Update Profile</string>
     <string name="delete_account">Delete Account</string>

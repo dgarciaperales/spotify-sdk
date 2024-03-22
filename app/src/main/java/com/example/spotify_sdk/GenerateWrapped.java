@@ -94,7 +94,6 @@ public class GenerateWrapped extends AppCompatActivity {
                             tracks.add(jsonArray.getJSONObject(i).getString("name"));
                         }
 
-                        // Make a separate API call for artists
                         mCall = mOkHttpClient.newCall(artistsRequest);
 
                         mCall.enqueue(new Callback() {
@@ -114,18 +113,73 @@ public class GenerateWrapped extends AppCompatActivity {
                                         artists.add(artistsArray.getJSONObject(i).getString("name"));
                                     }
 
-                                    Bundle bundle = new Bundle();
-                                    bundle.putStringArrayList("tracks", tracks);
-                                    bundle.putStringArrayList("artists", artists);
+                                    mCall = mOkHttpClient.newCall(new Request.Builder()
+                                            .url("https://api.spotify.com/v1/me")
+                                            .addHeader("Authorization", "Bearer " + mAccessToken)
+                                            .build());
 
-                                    TracksFragment tracksFragment = new TracksFragment();
-                                    tracksFragment.setArguments(bundle);
+                                    mCall.enqueue(new Callback() {
+                                        @Override
+                                        public void onFailure(Call call, IOException e) {
+                                            Log.d("HTTP", "Failed to fetch user info: " + e);
+                                            showToast("Failed to fetch user info, watch Logcat for more details");
+                                        }
 
-                                    // Start the DisplayWrapped activity
-                                    // Intent intent = new Intent(GenerateWrapped.this, DisplayWrapped.class);
-                                    // startActivity(intent);
+                                        @Override
+                                        public void onResponse(Call call, Response response) throws IOException {
+                                            try {
+                                                final JSONObject userObject = new JSONObject(response.body().string());
+                                                final String userId = userObject.getString("id");
 
-                                    setTextAsync("Top Tracks: " + tracks.toString() + "\nTop Artists: " + artists.toString(), profileTextView);
+                                                final Request genresRequest = new Request.Builder()
+                                                        .url("https://api.spotify.com/v1/me/top/artists?time_range=" + timeRange + "&limit=50")
+                                                        .addHeader("Authorization", "Bearer " + mAccessToken)
+                                                        .build();
+
+                                                mCall = mOkHttpClient.newCall(genresRequest);
+
+                                                mCall.enqueue(new Callback() {
+                                                    @Override
+                                                    public void onFailure(Call call, IOException e) {
+                                                        Log.d("HTTP", "Failed to fetch genres: " + e);
+                                                        showToast("Failed to fetch genres, watch Logcat for more details");
+                                                    }
+
+                                                    @Override
+                                                    public void onResponse(Call call, Response response) throws IOException {
+                                                        try {
+                                                            final JSONObject genresObject = new JSONObject(response.body().string());
+                                                            final JSONArray genresArray = genresObject.getJSONArray("items");
+                                                            ArrayList<String> genres = new ArrayList<>();
+                                                            for (int i = 0; i < genresArray.length() && genres.size() < 5; i++) {
+                                                                JSONArray artistGenres = genresArray.getJSONObject(i).getJSONArray("genres");
+                                                                for (int j = 0; j < artistGenres.length() && genres.size() < 5; j++) {
+                                                                    String genre = artistGenres.getString(j);
+                                                                    if (!genres.contains(genre)) {
+                                                                        genres.add(genre);
+                                                                    }
+                                                                }
+                                                            }
+                                                            Bundle bundle = new Bundle();
+                                                            bundle.putStringArrayList("tracks", tracks);
+                                                            bundle.putStringArrayList("artists", artists);
+                                                            bundle.putStringArrayList("genres", genres);
+
+                                                            setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString(), profileTextView);
+                                                        } catch (JSONException e) {
+                                                            Log.d("JSON", "Failed to parse genres: " + e);
+                                                            showToast("Failed to parse genres, watch Logcat for more details");
+                                                        }
+                                                    }
+                                                });
+
+                                            } catch (JSONException e) {
+                                                Log.d("JSON", "Failed to parse user info: " + e);
+                                                showToast("Failed to parse user info, watch Logcat for more details");
+                                            }
+                                        }
+                                    });
+
                                 } catch (JSONException e) {
                                     Log.d("JSON", "Failed to parse artists: " + e);
                                     showToast("Failed to parse artists, watch Logcat for more details");

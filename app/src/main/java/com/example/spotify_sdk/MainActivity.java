@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
 import android.view.View;
@@ -30,6 +34,19 @@ public class MainActivity extends AppCompatActivity {
 
         Button loginBtn = findViewById(R.id.login_btn);
         Button generateWrappedBtn = findViewById(R.id.generate_wrapped_btn);
+
+        LinearLayout scrollContentLayout = findViewById(R.id.pastWrappedLayout);
+
+        for (int i = 0; i < 10; i++) {
+            View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
+            TextView songNameTextView = cardView.findViewById(R.id.song_name_text_view);
+            TextView artistNameTextView = cardView.findViewById(R.id.artist_name_text_view);
+
+            songNameTextView.setText("Song Name " + (i + 1));
+            artistNameTextView.setText("Artist Name " + (i + 1));
+
+            scrollContentLayout.addView(cardView);
+        }
 
         loginBtn.setOnClickListener(v -> {
             getToken();
