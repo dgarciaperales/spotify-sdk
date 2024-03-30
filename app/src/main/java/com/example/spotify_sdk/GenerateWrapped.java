@@ -320,6 +320,55 @@ public class GenerateWrapped extends AppCompatActivity {
                                 Long wrappedCounterVal = (Long) wrappedCounterObj;
                                 wrappedCount[0] = (Integer) wrappedCounterVal.intValue();
                                 Log.d("Wrapped Count", "" + wrappedCount[0]);
+                                String wrapName = "wrapped" + wrappedCount[0].toString();
+
+                                //user document -> collection -> document -> data
+                                Map <String,Object> info = new HashMap<>();
+                                info.put("recArtists", recArtists);
+                                info.put("recArtistImgs", recArtistImgs);
+                                info.put("topArtists", topArtists);
+                                info.put("topArtistImgs", topArtistImgs);
+                                info.put("topGenres", topGenres);
+                                info.put("topTracks", topTracks);
+                                info.put("topTrackArtists", topTrackArtists);
+                                info.put("topTrackImgs", topTrackImgs);
+                                info.put("timestamp", timestamp);
+                                info.put("timeframe", timeframe);
+
+                                CollectionReference wrappedCollectionRef = userDocRef.collection("wrapped");
+                                wrappedCollectionRef.document(wrapName)
+                                        .set(info)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Firestore", "Wrapped data document added");
+                                                // Handle success
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.e("Firestore", "Error adding document", e);
+                                                // Handle failure
+                                            }
+                                        });
+
+                                wrappedCount[0]++;
+                                Map<String, Object> newCount = new HashMap<>();
+                                newCount.put("wrappedCounter", wrappedCount[0]);
+                                userDocRef.update(newCount)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("Firestore", "Counter incremented");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("Firestore", "Counter failed", e);
+                                            }
+                                        });
                             } else {
                                 Log.d("Firestore", "User data is null");
                             }
@@ -332,39 +381,6 @@ public class GenerateWrapped extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e("Firestore", "Error getting document", e);
-                    }
-                });
-
-        String wrapName = "wrapped" + wrappedCount[0].toString();
-
-        //user document -> collection -> document -> data
-        Map <String,Object> info = new HashMap<>();
-        info.put("recArtists", recArtists);
-        info.put("recArtistImgs", recArtistImgs);
-        info.put("topArtists", topArtists);
-        info.put("topArtistImgs", topArtistImgs);
-        info.put("topGenres", topGenres);
-        info.put("topTracks", topTracks);
-        info.put("topTrackArtists", topTrackArtists);
-        info.put("topTrackImgs", topTrackImgs);
-        info.put("timestamp", timestamp);
-        info.put("timeframe", timeframe);
-
-        CollectionReference wrappedCollectionRef = userDocRef.collection("wrapped");
-        wrappedCollectionRef.document(wrapName)
-                .set(info)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Firestore", "Wrapped data document added");
-                        // Handle success
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("Firestore", "Error adding document", e);
-                        // Handle failure
                     }
                 });
 
