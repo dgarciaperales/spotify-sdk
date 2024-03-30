@@ -13,12 +13,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,6 +47,8 @@ public class GenerateWrapped extends AppCompatActivity {
     private Call mCall;
 
     private String firstArtistId;
+
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +66,8 @@ public class GenerateWrapped extends AppCompatActivity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.timeSpans, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dropdown.setAdapter(adapter);
+
+
 
         getRequestBtn.setOnClickListener(v -> {
             String selectedTimeSpan = dropdown.getSelectedItem().toString();
@@ -259,4 +278,73 @@ public class GenerateWrapped extends AppCompatActivity {
             mCall.cancel();
         }
     }
+
+    private void addWrapped(List<String> recArtists, List<String> recArtistImgs, List<String> topArtists,
+                            List<String> topArtistImgs, List<String> topGenres, List<String> topTracks, List<String> topTrackArtists,
+                            List<String> topTrackImgs, Timestamp timestamp, String timeframe){
+        String docId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        DocumentReference userDocRef = firestore.collection("users").document(docId);
+        final Integer[] wrappedCount = {0};
+        userDocRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Map<String, Object> userData = documentSnapshot.getData();
+                            if (userData != null) {
+                                Object wrappedCounterObj = userData.get("wrappedCounter");
+                                //had to do some long conversion here? firebase storing as long not integer
+                                Long wrappedCounterVal = (Long) wrappedCounterObj;
+                                wrappedCount[0] = (Integer) wrappedCounterVal.intValue();
+                                Log.d("Wrapped Count", "" + wrappedCount[0]);
+                            } else {
+                                Log.d("Firestore", "User data is null");
+                            }
+                        } else {
+                            Log.d("Firestore", "No such document");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Firestore", "Error getting document", e);
+                    }
+                });
+
+        String wrapName = "wrapped" + wrappedCount[0].toString();
+
+        //user document -> collection -> document -> data
+        Map <String,Object> info = new HashMap<>();
+        info.put("recArtists", recArtists);
+        info.put("recArtistImgs", recArtistImgs);
+        info.put("topArtists", topArtists);
+        info.put("topArtistImgs", topArtistImgs);
+        info.put("topGenres", topGenres);
+        info.put("topTracks", topTracks);
+        info.put("topTrackArtists", topTrackArtists);
+        info.put("topTrackImgs", topTrackImgs);
+        info.put("timestamp", timestamp);
+        info.put("timeframe", timeframe);
+
+        CollectionReference wrappedCollectionRef = userDocRef.collection("wrapped");
+        wrappedCollectionRef.document(wrapName)
+                .set(info)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("Firestore", "Wrapped data document added");
+                        // Handle success
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Firestore", "Error adding document", e);
+                        // Handle failure
+                    }
+                });
+
+    }
 }
+
