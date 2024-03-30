@@ -31,6 +31,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,8 @@ public class GenerateWrapped extends AppCompatActivity {
             mAccessToken = getIntent().getStringExtra("access_token");
         }
 
+        firestore = FirebaseFirestore.getInstance();
+
         Spinner dropdown = findViewById(R.id.spinner);
         Button getRequestBtn = findViewById(R.id.enter_btn);
         TextView profileTextView = findViewById(R.id.profile_text_view);
@@ -67,19 +71,31 @@ public class GenerateWrapped extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dropdown.setAdapter(adapter);
 
+        ArrayList<String> relatedArtists = new ArrayList<>();
+        ArrayList<String> artists = new ArrayList<>();
+        ArrayList<String> recArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> topArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> genres = new ArrayList<>();
+        ArrayList<String> tracks = new ArrayList<>();
+        ArrayList<String> topTrackArtists = new ArrayList<>();
+        ArrayList<String> topTrackImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
 
 
         getRequestBtn.setOnClickListener(v -> {
             String selectedTimeSpan = dropdown.getSelectedItem().toString();
             String timeRange;
+            String timeframe;
             switch (selectedTimeSpan) {
                 case "4 weeks":
+                    timeframe = "4 weeks";
                     timeRange = "short_term";
                     break;
                 case "6 months":
+                    timeframe = "6 months";
                     timeRange = "medium_term";
                     break;
                 case "Several years":
+                    timeframe = "Several years";
                     timeRange = "long_term";
                     break;
                 default:
@@ -111,9 +127,15 @@ public class GenerateWrapped extends AppCompatActivity {
                     try {
                         final JSONObject jsonObject = new JSONObject(response.body().string());
                         final JSONArray jsonArray = jsonObject.getJSONArray("items");
-                        ArrayList<String> tracks = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            tracks.add(jsonArray.getJSONObject(i).getString("name"));
+                            JSONObject trackObject = jsonArray.getJSONObject(i);
+                            tracks.add(trackObject.getString("name"));
+
+                            JSONArray artistsArray = trackObject.getJSONArray("artists");
+                            JSONObject firstArtist = artistsArray.getJSONObject(0);
+                            String artistName = firstArtist.getString("name");
+                            topTrackArtists.add(artistName);
+
                         }
 
                         mCall = mOkHttpClient.newCall(artistsRequest);
@@ -131,7 +153,6 @@ public class GenerateWrapped extends AppCompatActivity {
                                     final JSONObject artistsObject = new JSONObject(response.body().string());
                                     final JSONArray artistsArray = artistsObject.getJSONArray("items");
                                     firstArtistId = artistsArray.getJSONObject(0).getString("id");
-                                    ArrayList<String> artists = new ArrayList<>();
                                     for (int i = 0; i < artistsArray.length(); i++) {
                                         artists.add(artistsArray.getJSONObject(i).getString("name"));
                                     }
@@ -173,7 +194,6 @@ public class GenerateWrapped extends AppCompatActivity {
                                                         try {
                                                             final JSONObject genresObject = new JSONObject(response.body().string());
                                                             final JSONArray genresArray = genresObject.getJSONArray("items");
-                                                            ArrayList<String> genres = new ArrayList<>();
                                                             for (int i = 0; i < genresArray.length() && genres.size() < 5; i++) {
                                                                 JSONArray artistGenres = genresArray.getJSONObject(i).getJSONArray("genres");
                                                                 for (int j = 0; j < artistGenres.length() && genres.size() < 5; j++) {
@@ -209,7 +229,6 @@ public class GenerateWrapped extends AppCompatActivity {
 
                                                                         JSONObject relatedArtistsObject = new JSONObject(responseBody);
                                                                         JSONArray relatedArtistsArray = relatedArtistsObject.getJSONArray("artists");
-                                                                        ArrayList<String> relatedArtists = new ArrayList<>();
                                                                         int count = Math.min(relatedArtistsArray.length(), 5);
                                                                         for (int i = 0; i < count; i++) {
                                                                             JSONObject artistObject = relatedArtistsArray.getJSONObject(i);
@@ -224,6 +243,9 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                         bundle.putStringArrayList("Recommended Artists", relatedArtists);
 
                                                                         setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString() + "\n\n Recommended Artists: " + relatedArtists.toString(), profileTextView);
+                                                                        Timestamp timestamp = new Timestamp(new Date());
+                                                                        addWrapped(relatedArtists, recArtistImgs, artists,topArtistImgs, genres, tracks, topTrackArtists, topTrackImgs, timestamp, timeframe);
+
 
                                                                     }
                                                                     catch (JSONException e) {
@@ -283,6 +305,7 @@ public class GenerateWrapped extends AppCompatActivity {
                             List<String> topArtistImgs, List<String> topGenres, List<String> topTracks, List<String> topTrackArtists,
                             List<String> topTrackImgs, Timestamp timestamp, String timeframe){
         String docId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        Log.d("docId", docId);
         DocumentReference userDocRef = firestore.collection("users").document(docId);
         final Integer[] wrappedCount = {0};
         userDocRef.get()

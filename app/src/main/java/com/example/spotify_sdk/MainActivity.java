@@ -39,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         for (int i = 0; i < 10; i++) {
             View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
-            TextView songNameTextView = cardView.findViewById(R.id.song_name_text_view);
-            TextView artistNameTextView = cardView.findViewById(R.id.artist_name_text_view);
+            TextView TimeFrameView = cardView.findViewById(R.id.time_frame_view);
+            TextView TimeStampView = cardView.findViewById(R.id.time_stamp_view);
 
-            songNameTextView.setText("Song Name " + (i + 1));
-            artistNameTextView.setText("Artist Name " + (i + 1));
+            TimeFrameView.setText("Warpped created on " + (i + 1));
+            TimeStampView.setText("Wrapped spanning " + (i + 1));
 
             scrollContentLayout.addView(cardView);
         }
