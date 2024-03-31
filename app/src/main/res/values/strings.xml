@@ -24,6 +24,8 @@
     <string name="home_description">home</string>
     <string name="feed_description">feed</string>
     <string name="settings_title">Settings</string>
+    <string name="search">Search</string>
+    <string name="friends_add">friends add</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>
