@@ -74,11 +74,11 @@ public class GenerateWrapped extends AppCompatActivity {
         ArrayList<String> relatedArtists = new ArrayList<>();
         ArrayList<String> artists = new ArrayList<>();
         ArrayList<String> recArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
-        ArrayList<String> topArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> topArtistImgs = new ArrayList<>();
         ArrayList<String> genres = new ArrayList<>();
         ArrayList<String> tracks = new ArrayList<>();
         ArrayList<String> topTrackArtists = new ArrayList<>();
-        ArrayList<String> topTrackImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> topTrackImgs = new ArrayList<>();
 
 
         getRequestBtn.setOnClickListener(v -> {
@@ -130,6 +130,9 @@ public class GenerateWrapped extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject trackObject = jsonArray.getJSONObject(i);
                             tracks.add(trackObject.getString("name"));
+                            JSONObject album = trackObject.getJSONObject("album");
+                            JSONArray albumImage = album.getJSONArray("image");
+                            topTrackImgs.add(albumImage.getString(0));
 
                             JSONArray artistsArray = trackObject.getJSONArray("artists");
                             JSONObject firstArtist = artistsArray.getJSONObject(0);
@@ -155,6 +158,8 @@ public class GenerateWrapped extends AppCompatActivity {
                                     firstArtistId = artistsArray.getJSONObject(0).getString("id");
                                     for (int i = 0; i < artistsArray.length(); i++) {
                                         artists.add(artistsArray.getJSONObject(i).getString("name"));
+                                        JSONArray artistImage = artistsArray.getJSONObject(i).getJSONArray("image");
+                                        topArtistImgs.add(artistImage.getString(0));
                                     }
 
                                     mCall = mOkHttpClient.newCall(new Request.Builder()
@@ -240,8 +245,11 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                         bundle.putStringArrayList("tracks", tracks);
                                                                         bundle.putStringArrayList("artists", artists);
                                                                         bundle.putStringArrayList("genres", genres);
+                                                                        bundle.putStringArrayList("trackImgs", topTrackImgs);
+                                                                        bundle.putStringArrayList("artistImgs", topArtistImgs);
                                                                         bundle.putStringArrayList("Recommended Artists", relatedArtists);
-
+                                                                        Intent intent = new Intent(GenerateWrapped.this, DisplayWrapped.class);
+                                                                        intent.putExtras(bundle);
                                                                         setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString() + "\n\n Recommended Artists: " + relatedArtists.toString(), profileTextView);
                                                                         Timestamp timestamp = new Timestamp(new Date());
                                                                         addWrapped(relatedArtists, recArtistImgs, artists,topArtistImgs, genres, tracks, topTrackArtists, topTrackImgs, timestamp, timeframe);
