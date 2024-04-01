@@ -1,5 +1,6 @@
 package com.example.spotify_sdk;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
@@ -14,9 +15,26 @@ import android.widget.Toast;
 import android.widget.ImageButton;
 import android.view.View;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.spotify.sdk.android.auth.AuthorizationClient;
 import com.spotify.sdk.android.auth.AuthorizationRequest;
 import com.spotify.sdk.android.auth.AuthorizationResponse;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 
@@ -26,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     public static final int AUTH_TOKEN_REQUEST_CODE = 0;
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private String mAccessToken;
+
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +58,43 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout scrollContentLayout = findViewById(R.id.pastWrappedLayout);
 
-        for (int i = 0; i < 10; i++) {
-            View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
-            TextView TimeFrameView = cardView.findViewById(R.id.time_frame_view);
-            TextView TimeStampView = cardView.findViewById(R.id.time_stamp_view);
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
-            TimeFrameView.setText("Warpped created on " + (i + 1));
-            TimeStampView.setText("Wrapped spanning " + (i + 1));
+        //get current user's email to access their account
+        String docId = auth.getCurrentUser().getEmail();
+        DocumentReference userDocRef = firestore.collection("users").document(docId);
 
-            scrollContentLayout.addView(cardView);
-        }
+        //get user's wrapped counter, use as loop condition
+        final Integer[] wrappedCount = {0};
+        userDocRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Map<String, Object> userData = documentSnapshot.getData();
+                            if (userData != null) {
+                                Object wrappedCounterObj = userData.get("wrappedCounter");
+                                //had to do some long conversion here? firebase storing as long not integer
+                                Long wrappedCounterVal = (Long) wrappedCounterObj;
+                                wrappedCount[0] = (Integer) wrappedCounterVal.intValue();
+                                Log.d("Wrapped Count", "" + wrappedCount[0]);
+                                //String wrapName = "wrapped" + wrappedCount[0].toString();
+                                updatePastWrapped(wrappedCount[0], userDocRef, scrollContentLayout);
+                            } else {
+                                Log.d("Firestore", "User data is null");
+                            }
+                        } else {
+                            Log.d("Firestore", "No such document");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("Firestore", "Error getting document", e);
+                    }
+                });
 
         loginBtn.setOnClickListener(v -> {
             getToken();
@@ -110,5 +158,54 @@ public class MainActivity extends AppCompatActivity {
 
     private Uri getRedirectUri() {
         return Uri.parse(REDIRECT_URI);
+    }
+
+    private void updatePastWrapped(Integer wrappedTotal, DocumentReference userDocRef, LinearLayout scrollContentLayout){
+        for (int i = 1; i <= wrappedTotal - 1; i++) {
+            View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
+            TextView TimeFrameView = cardView.findViewById(R.id.time_frame_view);
+            TextView TimeStampView = cardView.findViewById(R.id.time_stamp_view);
+
+            //get timestamp and timeframe value for each wrapped
+
+            TimeFrameView.setText("Wrapped " + (i));
+            CollectionReference wrappedCol = userDocRef.collection("wrapped");
+            final String[] timestamp = {""};
+            String timeframe = "";
+            String wrapName = "Wrapped " + i;
+            wrappedCol.document("wrapped"+i)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot document) {
+                            if (document != null) {
+                                Timestamp fullTimestamp = document.getTimestamp("timestamp");
+                                String timeframe = document.getString("timeframe");
+                                if(fullTimestamp != null){
+                                    Date date = fullTimestamp.toDate();
+                                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYYY", Locale.getDefault());
+                                    timestamp[0] = sdf.format(date);
+                                    TimeFrameView.setText(wrapName + ": " + timestamp[0]);
+                                } else {
+                                    Log.d("Firestore", "Unable to get timestamp value");
+                                }
+                                if(timeframe != null){
+                                    TimeStampView.setText("Wrapped spanning " + timeframe);
+                                } else {
+                                    Log.d("Firestore", "Unable to get timeframe value");
+                                }
+                                scrollContentLayout.addView(cardView);
+                            } else {
+                                Log.d("Firestore", "No such document");
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d("Firestore", "get failed with ", e);
+                        }
+                    });
+        }
     }
 }
