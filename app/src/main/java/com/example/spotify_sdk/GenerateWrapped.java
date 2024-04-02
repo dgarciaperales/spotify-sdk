@@ -1,5 +1,4 @@
 package com.example.spotify_sdk;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,11 +7,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,11 +21,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,51 +31,40 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
 public class GenerateWrapped extends AppCompatActivity {
     private String mAccessToken;
     private final OkHttpClient mOkHttpClient = new OkHttpClient();
     private Call mCall;
-
     private String firstArtistId;
-
     private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.generate_wrapped);
-
         if (getIntent().hasExtra("access_token")) {
             mAccessToken = getIntent().getStringExtra("access_token");
         }
-
         firestore = FirebaseFirestore.getInstance();
-
         Spinner dropdown = findViewById(R.id.spinner);
         Button getRequestBtn = findViewById(R.id.enter_btn);
         TextView profileTextView = findViewById(R.id.profile_text_view);
-
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.timeSpans, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         dropdown.setAdapter(adapter);
-
         ArrayList<String> relatedArtists = new ArrayList<>();
         ArrayList<String> artists = new ArrayList<>();
         ArrayList<String> recArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
-        ArrayList<String> topArtistImgs = new ArrayList<>();
+        ArrayList<String> topArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
         ArrayList<String> genres = new ArrayList<>();
         ArrayList<String> tracks = new ArrayList<>();
         ArrayList<String> topTrackArtists = new ArrayList<>();
-        ArrayList<String> topTrackImgs = new ArrayList<>();
-
-
+        ArrayList<String> topTrackImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
         getRequestBtn.setOnClickListener(v -> {
             String selectedTimeSpan = dropdown.getSelectedItem().toString();
             String timeRange;
@@ -101,20 +85,16 @@ public class GenerateWrapped extends AppCompatActivity {
                 default:
                     return;
             }
-
             final Request tracksRequest = new Request.Builder()
                     .url("https://api.spotify.com/v1/me/top/tracks?time_range=" + timeRange + "&limit=5")
                     .addHeader("Authorization", "Bearer " + mAccessToken)
                     .build();
-
             final Request artistsRequest = new Request.Builder()
                     .url("https://api.spotify.com/v1/me/top/artists?time_range=" + timeRange + "&limit=5")
                     .addHeader("Authorization", "Bearer " + mAccessToken)
                     .build();
-
             cancelCall();
             mCall = mOkHttpClient.newCall(tracksRequest);
-
             mCall.enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -130,19 +110,12 @@ public class GenerateWrapped extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject trackObject = jsonArray.getJSONObject(i);
                             tracks.add(trackObject.getString("name"));
-                            JSONObject album = trackObject.getJSONObject("album");
-                            JSONArray albumImage = album.getJSONArray("image");
-                            topTrackImgs.add(albumImage.getString(0));
-
                             JSONArray artistsArray = trackObject.getJSONArray("artists");
                             JSONObject firstArtist = artistsArray.getJSONObject(0);
                             String artistName = firstArtist.getString("name");
                             topTrackArtists.add(artistName);
-
                         }
-
                         mCall = mOkHttpClient.newCall(artistsRequest);
-
                         mCall.enqueue(new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -158,15 +131,11 @@ public class GenerateWrapped extends AppCompatActivity {
                                     firstArtistId = artistsArray.getJSONObject(0).getString("id");
                                     for (int i = 0; i < artistsArray.length(); i++) {
                                         artists.add(artistsArray.getJSONObject(i).getString("name"));
-                                        JSONArray artistImage = artistsArray.getJSONObject(i).getJSONArray("image");
-                                        topArtistImgs.add(artistImage.getString(0));
                                     }
-
                                     mCall = mOkHttpClient.newCall(new Request.Builder()
                                             .url("https://api.spotify.com/v1/me")
                                             .addHeader("Authorization", "Bearer " + mAccessToken)
                                             .build());
-
                                     mCall.enqueue(new Callback() {
                                         @Override
                                         public void onFailure(Call call, IOException e) {
@@ -179,14 +148,11 @@ public class GenerateWrapped extends AppCompatActivity {
                                             try {
                                                 final JSONObject userObject = new JSONObject(response.body().string());
                                                 final String userId = userObject.getString("id");
-
                                                 final Request genresRequest = new Request.Builder()
                                                         .url("https://api.spotify.com/v1/me/top/artists?time_range=" + timeRange + "&limit=50")
                                                         .addHeader("Authorization", "Bearer " + mAccessToken)
                                                         .build();
-
                                                 mCall = mOkHttpClient.newCall(genresRequest);
-
                                                 mCall.enqueue(new Callback() {
                                                     @Override
                                                     public void onFailure(Call call, IOException e) {
@@ -208,12 +174,10 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                     }
                                                                 }
                                                             }
-
                                                             final Request relatedArtistsRequest = new Request.Builder()
                                                                     .url("https://api.spotify.com/v1/artists/" + firstArtistId + "/related-artists")
                                                                     .addHeader("Authorization", "Bearer " + mAccessToken)
                                                                     .build();
-
                                                             mOkHttpClient.newCall(relatedArtistsRequest).enqueue(new Callback() {
                                                                 @Override
                                                                 public void onFailure(@NonNull Call call, @NonNull IOException e) {
@@ -231,7 +195,6 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                         }
                                                                         String responseBody = response.body().string();
                                                                         Log.d("Response", "Response body: " + responseBody);
-
                                                                         JSONObject relatedArtistsObject = new JSONObject(responseBody);
                                                                         JSONArray relatedArtistsArray = relatedArtistsObject.getJSONArray("artists");
                                                                         int count = Math.min(relatedArtistsArray.length(), 5);
@@ -240,52 +203,38 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                             String artistName = artistObject.getString("name");
                                                                             relatedArtists.add(artistName);
                                                                         }
-
                                                                         Bundle bundle = new Bundle();
                                                                         bundle.putStringArrayList("tracks", tracks);
                                                                         bundle.putStringArrayList("artists", artists);
                                                                         bundle.putStringArrayList("genres", genres);
-                                                                        bundle.putStringArrayList("trackImgs", topTrackImgs);
-                                                                        bundle.putStringArrayList("artistImgs", topArtistImgs);
                                                                         bundle.putStringArrayList("Recommended Artists", relatedArtists);
-                                                                        Intent intent = new Intent(GenerateWrapped.this, DisplayWrapped.class);
-                                                                        intent.putExtras(bundle);
                                                                         setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString() + "\n\n Recommended Artists: " + relatedArtists.toString(), profileTextView);
                                                                         Timestamp timestamp = new Timestamp(new Date());
-                                                                        addWrapped(relatedArtists, recArtistImgs, artists,topArtistImgs, genres, tracks, topTrackArtists, topTrackImgs, timestamp, timeframe);
-
-
-                                                                    }
-                                                                    catch (JSONException e) {
+                                                                        addWrapped(relatedArtists, recArtistImgs, artists, topArtistImgs, genres, tracks, topTrackArtists, topTrackImgs, timestamp, timeframe);
+                                                                    } catch (JSONException e) {
                                                                         Log.d("JSON", "Failed to parse recommendations: " + e);
                                                                         showToast("Failed to parse recommendations, watch Logcat for more details");
                                                                     }
                                                                 }
                                                             });
-
-
-
                                                         } catch (JSONException e) {
                                                             Log.d("JSON", "Failed to parse genres: " + e);
                                                             showToast("Failed to parse genres, watch Logcat for more details");
                                                         }
                                                     }
                                                 });
-
                                             } catch (JSONException e) {
                                                 Log.d("JSON", "Failed to parse user info: " + e);
                                                 showToast("Failed to parse user info, watch Logcat for more details");
                                             }
                                         }
                                     });
-
                                 } catch (JSONException e) {
                                     Log.d("JSON", "Failed to parse artists: " + e);
                                     showToast("Failed to parse artists, watch Logcat for more details");
                                 }
                             }
                         });
-
                     } catch (JSONException e) {
                         Log.d("JSON", "Failed to parse tracks: " + e);
                         showToast("Failed to parse tracks, watch Logcat for more details");
@@ -311,7 +260,7 @@ public class GenerateWrapped extends AppCompatActivity {
 
     private void addWrapped(List<String> recArtists, List<String> recArtistImgs, List<String> topArtists,
                             List<String> topArtistImgs, List<String> topGenres, List<String> topTracks, List<String> topTrackArtists,
-                            List<String> topTrackImgs, Timestamp timestamp, String timeframe){
+                            List<String> topTrackImgs, Timestamp timestamp, String timeframe) {
         String docId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Log.d("docId", docId);
         DocumentReference userDocRef = firestore.collection("users").document(docId);
@@ -331,7 +280,7 @@ public class GenerateWrapped extends AppCompatActivity {
                                 String wrapName = "wrapped" + wrappedCount[0].toString();
 
                                 //user document -> collection -> document -> data
-                                Map <String,Object> info = new HashMap<>();
+                                Map<String, Object> info = new HashMap<>();
                                 info.put("recArtists", recArtists);
                                 info.put("recArtistImgs", recArtistImgs);
                                 info.put("topArtists", topArtists);
@@ -391,7 +340,5 @@ public class GenerateWrapped extends AppCompatActivity {
                         Log.e("Firestore", "Error getting document", e);
                     }
                 });
-
     }
 }
-
