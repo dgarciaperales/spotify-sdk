@@ -2,6 +2,7 @@ package com.example.spotify_sdk;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -53,6 +54,8 @@ public class GenerateWrapped extends AppCompatActivity {
         firestore = FirebaseFirestore.getInstance();
         Spinner dropdown = findViewById(R.id.spinner);
         Button getRequestBtn = findViewById(R.id.enter_btn);
+        Button backBtn = findViewById(R.id.back_btn);
+        Button displayBtn = findViewById(R.id.display_btn);
         TextView profileTextView = findViewById(R.id.profile_text_view);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.timeSpans, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -65,6 +68,20 @@ public class GenerateWrapped extends AppCompatActivity {
         ArrayList<String> tracks = new ArrayList<>();
         ArrayList<String> topTrackArtists = new ArrayList<>();
         ArrayList<String> topTrackImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GenerateWrapped.this, MainActivity.class));
+                finish();
+            }
+        });
+        displayBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GenerateWrapped.this, DisplayWrapped.class));
+                finish();
+            }
+        });
         getRequestBtn.setOnClickListener(v -> {
             String selectedTimeSpan = dropdown.getSelectedItem().toString();
             String timeRange;
