@@ -26,6 +26,18 @@
     <string name="settings_title">Settings</string>
     <string name="search">Search</string>
     <string name="friends_add">friends add</string>
+    <string name="persons_username">Username</string>
+    <string name="post_content">post content</string>
+    <string name="tentative">like and comment and share buttons will go here</string>
+    <string name="feed_Button">Feed</string>
+    <string name="liked_commented">Liked/Commented</string>
+    <string name="top_artists">Top Artists</string>
+    <string name="top_genres">Top Genres</string>
+    <string name="top_genre">Top Genre</string>
+    <string name="the_user_s_top_artist">The user\'s top artist</string>
+    <string name="like_button_for_users">like button for users</string>
+    <string name="comment_for_users">comment for users</string>
+    <string name="top_tracks">Top Tracks</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>
