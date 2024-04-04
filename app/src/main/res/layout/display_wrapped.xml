@@ -43,11 +43,12 @@
             android:layout_height="100dp"
             tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/name1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="14sp"
         android:inputType="text"
         android:text="" />
     </LinearLayout>
@@ -62,12 +63,13 @@
             android:layout_height="100dp"
             tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/name2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
+        android:textSize="14sp"
         android:text="" />
     </LinearLayout>
     <LinearLayout
@@ -81,12 +83,13 @@
             android:layout_height="100dp"
             tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/name3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
+        android:textSize="14sp"
         android:text="" />
     </LinearLayout>
     <LinearLayout
@@ -99,11 +102,12 @@
         android:layout_height="100dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/name4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="14sp"
         android:inputType="text"
         android:text="" />
     </LinearLayout>
@@ -117,11 +121,12 @@
         android:layout_height="100dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/name5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="14sp"
         android:inputType="text"
         android:text="" />
     </LinearLayout>
