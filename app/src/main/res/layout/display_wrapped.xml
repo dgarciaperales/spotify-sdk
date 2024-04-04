@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/generate_wrapped_background"
+    android:background="@drawable/displaycloudy"
     android:padding="16dp">
 
 
@@ -17,12 +17,14 @@
             android:id="@+id/btn_TopTrack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_purple"
             android:text="Top Tracks" />
 
         <Button
             android:id="@+id/btn_TopArtist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_purple"
             android:text="Top Artists"
             android:layout_marginLeft="10dp"/>
 
@@ -30,6 +32,7 @@
             android:id="@+id/btn_Genre"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/light_purple"
             android:text="Top Genres"
             android:layout_marginLeft="10dp"/>
     </LinearLayout>
@@ -51,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
+        android:textStyle="bold"
         android:ems="10"
         android:textSize="14sp"
         android:inputType="text"
@@ -72,6 +76,7 @@
         android:id="@+id/name2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
         android:ems="10"
@@ -97,6 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
+        android:textStyle="bold"
         android:ems="10"
         android:inputType="text"
         android:textSize="14sp"
@@ -120,6 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginStart="15dp"
+        android:textStyle="bold"
         android:ems="10"
         android:textSize="14sp"
         android:inputType="text"
@@ -141,6 +148,7 @@
         android:id="@+id/name5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:layout_marginStart="15dp"
         android:layout_marginTop="40dp"
         android:ems="10"
