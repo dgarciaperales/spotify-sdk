@@ -28,7 +28,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".WrappedCard"
+            android:name=".CommentViewActivity"
             android:exported="false" />
         <activity
             android:name=".GenerateWrapped"

@@ -2,6 +2,7 @@ package com.example.spotify_sdk;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import android.widget.ImageButton;
@@ -31,14 +32,11 @@ public class FeedActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-//        ImageButton addFriendsBtn=  (ImageButton) findViewById(R.id.addFriendsButton);
-//
-//        // Below code is for setting a click listener on the image
-//        addFriendsBtn.setOnClickListener(view -> {
-//            // Creating a toast to display the message
-//            Toast.makeText(FeedActivity.this, "Add Friends Page", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(FeedActivity.this, AddFriendsActivity.class);
-//            startActivity(intent);
-//        });
+        ImageButton commentButton =  (ImageButton) findViewById(R.id.comment_button);
+        commentButton.setOnClickListener(view -> {
+            Toast.makeText(FeedActivity.this, "Comments Page", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(FeedActivity.this, CommentViewActivity.class);
+            startActivity(intent);
+        });
     }
 }
