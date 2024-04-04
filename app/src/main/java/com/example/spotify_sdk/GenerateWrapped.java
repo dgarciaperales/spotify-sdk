@@ -11,6 +11,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.spotify_sdk.DisplayWrapped;
+import com.example.spotify_sdk.MainActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -63,11 +66,12 @@ public class GenerateWrapped extends AppCompatActivity {
         ArrayList<String> relatedArtists = new ArrayList<>();
         ArrayList<String> artists = new ArrayList<>();
         ArrayList<String> recArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
-        ArrayList<String> topArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> topArtistImgs = new ArrayList<>();
         ArrayList<String> genres = new ArrayList<>();
         ArrayList<String> tracks = new ArrayList<>();
         ArrayList<String> topTrackArtists = new ArrayList<>();
-        ArrayList<String> topTrackImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> topTrackImgs = new ArrayList<>();
+        Intent intent = new Intent(GenerateWrapped.this, DisplayWrapped.class);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +82,7 @@ public class GenerateWrapped extends AppCompatActivity {
         displayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GenerateWrapped.this, DisplayWrapped.class));
+                startActivity(intent);
                 finish();
             }
         });
@@ -127,6 +131,10 @@ public class GenerateWrapped extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject trackObject = jsonArray.getJSONObject(i);
                             tracks.add(trackObject.getString("name"));
+                            JSONObject album = trackObject.getJSONObject("album");
+                            JSONArray albumImageArr = album.getJSONArray("images");
+                            JSONObject albumImage = albumImageArr.getJSONObject(2);
+                            topTrackImgs.add(albumImage.getString("url"));
                             JSONArray artistsArray = trackObject.getJSONArray("artists");
                             JSONObject firstArtist = artistsArray.getJSONObject(0);
                             String artistName = firstArtist.getString("name");
@@ -148,6 +156,9 @@ public class GenerateWrapped extends AppCompatActivity {
                                     firstArtistId = artistsArray.getJSONObject(0).getString("id");
                                     for (int i = 0; i < artistsArray.length(); i++) {
                                         artists.add(artistsArray.getJSONObject(i).getString("name"));
+                                        JSONArray artistImageT = artistsArray.getJSONObject(i).getJSONArray("images");
+                                        JSONObject artistImage = artistImageT.getJSONObject(2);
+                                        topArtistImgs.add(artistImage.getString("url"));
                                     }
                                     mCall = mOkHttpClient.newCall(new Request.Builder()
                                             .url("https://api.spotify.com/v1/me")
@@ -224,7 +235,11 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                         bundle.putStringArrayList("tracks", tracks);
                                                                         bundle.putStringArrayList("artists", artists);
                                                                         bundle.putStringArrayList("genres", genres);
+                                                                        bundle.putStringArrayList("topTrackImg", topTrackImgs);
+                                                                        bundle.putStringArrayList("topArtistImg", topArtistImgs);
                                                                         bundle.putStringArrayList("Recommended Artists", relatedArtists);
+                                                                        intent.putExtras(bundle);
+
                                                                         setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString() + "\n\n Recommended Artists: " + relatedArtists.toString(), profileTextView);
                                                                         Timestamp timestamp = new Timestamp(new Date());
                                                                         addWrapped(relatedArtists, recArtistImgs, artists, topArtistImgs, genres, tracks, topTrackArtists, topTrackImgs, timestamp, timeframe);
