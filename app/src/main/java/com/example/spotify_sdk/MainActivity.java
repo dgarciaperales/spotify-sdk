@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -128,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
         ImageButton feedButton = findViewById(R.id.feed_btn);
         feedButton.setOnClickListener( v -> {
             Intent intent = new Intent(MainActivity.this, FeedActivity.class);
+            startActivity(intent);
+        });
+
+        View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
+        ImageButton ImagePastWrapped = cardView.findViewById(R.id.album_cover);
+        ImagePastWrapped.setOnClickListener( v -> {
+            Intent intent = new Intent(MainActivity.this, DisplayWrapped.class);
             startActivity(intent);
         });
 
