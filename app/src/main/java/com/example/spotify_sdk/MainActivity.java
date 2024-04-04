@@ -33,8 +33,12 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import okhttp3.OkHttpClient;
 
@@ -165,6 +169,7 @@ public class MainActivity extends AppCompatActivity {
             View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
             TextView TimeFrameView = cardView.findViewById(R.id.time_frame_view);
             TextView TimeStampView = cardView.findViewById(R.id.time_stamp_view);
+            ImageButton AlbumCover = cardView.findViewById(R.id.album_cover);
 
             //get timestamp and timeframe value for each wrapped
 
@@ -181,11 +186,14 @@ public class MainActivity extends AppCompatActivity {
                             if (document != null) {
                                 Timestamp fullTimestamp = document.getTimestamp("timestamp");
                                 String timeframe = document.getString("timeframe");
+                                List<String> topTrackImgs = (List<String>) document.get("topTrackImgs");
+                                String topTrackImg = topTrackImgs.get(0);
                                 if(fullTimestamp != null){
                                     Date date = fullTimestamp.toDate();
                                     SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-YYYY", Locale.getDefault());
                                     timestamp[0] = sdf.format(date);
                                     TimeFrameView.setText(wrapName + ": " + timestamp[0]);
+                                    Log.d("albumCover", topTrackImg);
                                 } else {
                                     Log.d("Firestore", "Unable to get timestamp value");
                                 }
@@ -193,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
                                     TimeStampView.setText("Wrapped spanning " + timeframe);
                                 } else {
                                     Log.d("Firestore", "Unable to get timeframe value");
+                                }
+                                if(topTrackImg != null){
+                                    Glide.with(MainActivity.this).load(topTrackImg).into(AlbumCover);
+                                } else {
+                                    Log.d("Firestore", "Unable to get albumCover value");
                                 }
                                 scrollContentLayout.addView(cardView);
                             } else {
