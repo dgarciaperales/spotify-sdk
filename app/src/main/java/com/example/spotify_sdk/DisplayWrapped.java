@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 public class DisplayWrapped extends AppCompatActivity {
     Button btnTopTrack, btnTopArtist, btnTopGenre;
-    EditText name1, name2, name3, name4, name5;
+    TextView name1, name2, name3, name4, name5;
     ImageView image1, image2, image3, image4, image5;
 
 
