@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout; // Add this line
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -30,6 +31,21 @@ import android.os.Handler;
 import com.google.android.material.tabs.TabLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import android.graphics.Canvas;
+import java.io.OutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import android.widget.Toast;
+import android.os.Environment;
+import android.content.ContentValues;
+import android.provider.MediaStore;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.content.ContentResolver;
+import java.util.Objects;
+
+
 public class DisplayWrapped extends AppCompatActivity {
     Button btnTopTrack, btnTopArtist, btnTopGenre;
     TextView name1, name2, name3, name4, name5;
@@ -109,8 +125,8 @@ public class DisplayWrapped extends AppCompatActivity {
         });
 
 
-
     }
+
     public void clearSlate() {
         image1.setImageBitmap(null);
         image2.setImageBitmap(null);
@@ -124,5 +140,63 @@ public class DisplayWrapped extends AppCompatActivity {
         name5.setText("");
     }
 
+    public void exportBtn(View view) {
 
+        LinearLayout layout = findViewById(R.id.myLayout);
+        layout.setDrawingCacheEnabled(true);
+
+        layout.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(layout.getDrawingCache());
+        layout.setDrawingCacheEnabled(false); // clear drawing cache
+
+        saveToGallery(bitmap);
+    }
+
+
+    private void saveToGallery(Bitmap bitmap) {
+        OutputStream fos;
+        File imageFile = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ContentResolver resolver = getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, "Image_" + System.currentTimeMillis());
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + File.separator + "YourAppName");
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            try {
+                fos = resolver.openOutputStream(Objects.requireNonNull(imageUri));
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                Objects.requireNonNull(fos);
+                Toast.makeText(this, "Image Saved", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Image not saved: \n" + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        } else {
+            String imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString() + File.separator + "YourAppName";
+            File file = new File(imagesDir);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            String fileName = "image_" + System.currentTimeMillis() + ".png";
+            imageFile = new File(imagesDir, fileName);
+            try {
+                fos = new FileOutputStream(imageFile);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                fos.close();
+                Toast.makeText(this, "Image Saved", Toast.LENGTH_SHORT).show();
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(imageFile)));
+            } catch (Exception e) {
+                Toast.makeText(this, "Image not saved: \n" + e.getMessage(), Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
+
+
+
+
+
+
