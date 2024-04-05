@@ -2,36 +2,16 @@ package com.example.spotify_sdk;
 
 import android.os.Bundle;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.app.ProgressDialog;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout; // Add this line
+import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import android.graphics.drawable.Drawable;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import android.os.Handler;
-import com.google.android.material.tabs.TabLayout;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import android.graphics.Canvas;
 import java.io.OutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
