@@ -22,39 +22,40 @@
         android:id="@+id/update_profile"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/delete_account"
+        android:backgroundTint="@color/dark_pink"
         android:text="@string/update_profile"
         android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/delete_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/delete_account"
         android:layout_width="180dp"
         android:layout_height="60dp"
+        android:backgroundTint="@color/dark_pink"
         android:text="@string/delete_account"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/log_out"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
 
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/update_profile" />
 
     <Button
         android:id="@+id/log_out"
         android:layout_width="180dp"
         android:layout_height="60dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/delete_account"
-        app:layout_constraintBottom_toBottomOf="@id/navigation_buttons"
+        android:backgroundTint="@color/dark_pink"
         android:text="@string/log_out"
         android:textSize="18sp"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/navigation_buttons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/delete_account" />
 
     <LinearLayout
         android:id="@+id/navigation_buttons"
