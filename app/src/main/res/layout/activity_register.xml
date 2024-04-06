@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/register_background"
     tools:context=".RegisterActivity">
 
 
@@ -11,6 +12,9 @@
         android:id="@+id/back_button_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/regis_login_but"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:text="@string/back" />
@@ -19,6 +23,9 @@
         android:id="@+id/create_account_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/dark_pink"
+        android:textStyle="bold"
         android:text="@string/create_account_text"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/username_and_password_register"
@@ -51,6 +58,7 @@
     </LinearLayout>
     <Button
         android:id="@+id/register"
+        android:backgroundTint="@color/regis_login_but"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/register"
