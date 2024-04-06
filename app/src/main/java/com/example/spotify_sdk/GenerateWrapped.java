@@ -233,11 +233,13 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                         }
                                                                         Bundle bundle = new Bundle();
                                                                         bundle.putStringArrayList("tracks", tracks);
+                                                                        bundle.putStringArrayList("trackArtists", tracks);
                                                                         bundle.putStringArrayList("artists", artists);
                                                                         bundle.putStringArrayList("genres", genres);
                                                                         bundle.putStringArrayList("topTrackImg", topTrackImgs);
                                                                         bundle.putStringArrayList("topArtistImg", topArtistImgs);
-                                                                        bundle.putStringArrayList("Recommended Artists", relatedArtists);
+                                                                        bundle.putStringArrayList("recArtists", relatedArtists);
+                                                                        bundle.putStringArrayList("recArtistsImg", recArtistImgs);
                                                                         intent.putExtras(bundle);
 
                                                                         setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString() + "\n\n Recommended Artists: " + relatedArtists.toString(), profileTextView);

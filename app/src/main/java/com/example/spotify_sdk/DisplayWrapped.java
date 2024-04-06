@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout; // Add this line
@@ -60,6 +62,7 @@ public class DisplayWrapped extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         btnTopTrack = findViewById(R.id.btn_TopTrack);
         btnTopArtist = findViewById(R.id.btn_TopArtist);
+        ImageButton exitBtn = findViewById(R.id.exitBtn);
         btnTopGenre = findViewById(R.id.btn_Genre);
         name1 = findViewById(R.id.name1);
         name2 = findViewById(R.id.name2);
@@ -78,16 +81,27 @@ public class DisplayWrapped extends AppCompatActivity {
                 clearSlate();
                 ArrayList<String> trackImage = bundle.getStringArrayList("topTrackImg");
                 ArrayList<String> tracks = bundle.getStringArrayList("tracks");
+                ArrayList<String> trackArtists = bundle.getStringArrayList("trackArtists");
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(0)).into(image1);
-                name1.setText(tracks.get(0));
+                String text0 = tracks.get(0) + " - " + trackArtists.get(0);
+                name1.setText(text0);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(1)).into(image2);
-                name2.setText(tracks.get(1));
+                String text1 = tracks.get(1) + " - " + trackArtists.get(1);
+                name2.setText(text1);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(2)).into(image3);
-                name3.setText(tracks.get(2));
+                String text2 = tracks.get(2) + " - " + trackArtists.get(2);
+                name3.setText(text2);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(3)).into(image4);
-                name4.setText(tracks.get(3));
+                String text3 = tracks.get(3) + " - " + trackArtists.get(3);
+                name4.setText(text3);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(4)).into(image5);
-                name5.setText(tracks.get(4));
+                String text4 = tracks.get(4) + " - " + trackArtists.get(4);
+                name5.setText(text4);
 
             }
         });
@@ -108,6 +122,14 @@ public class DisplayWrapped extends AppCompatActivity {
                 Glide.with(DisplayWrapped.this).load(artistImg.get(4)).into(image5);
                 name5.setText(artists.get(4));
 
+            }
+        });
+
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayWrapped.this, MainActivity.class);
+                startActivity(intent);
             }
         });
         btnTopGenre.setOnClickListener(new View.OnClickListener() {
