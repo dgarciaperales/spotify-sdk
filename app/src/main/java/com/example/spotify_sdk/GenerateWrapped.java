@@ -65,7 +65,7 @@ public class GenerateWrapped extends AppCompatActivity {
         dropdown.setAdapter(adapter);
         ArrayList<String> relatedArtists = new ArrayList<>();
         ArrayList<String> artists = new ArrayList<>();
-        ArrayList<String> recArtistImgs = new ArrayList<>(Arrays.asList("img1", "img2", "img3", "img4", "img5"));
+        ArrayList<String> recArtistImgs = new ArrayList<>();
         ArrayList<String> topArtistImgs = new ArrayList<>();
         ArrayList<String> genres = new ArrayList<>();
         ArrayList<String> tracks = new ArrayList<>();
@@ -230,10 +230,14 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                             JSONObject artistObject = relatedArtistsArray.getJSONObject(i);
                                                                             String artistName = artistObject.getString("name");
                                                                             relatedArtists.add(artistName);
+                                                                            JSONArray relArtistImgs = artistObject.getJSONArray("images");
+                                                                            JSONObject recArtistImg = relArtistImgs.getJSONObject(2);
+                                                                            recArtistImgs.add(recArtistImg.getString("url"));
+
                                                                         }
                                                                         Bundle bundle = new Bundle();
                                                                         bundle.putStringArrayList("tracks", tracks);
-                                                                        bundle.putStringArrayList("trackArtists", tracks);
+                                                                        bundle.putStringArrayList("trackArtists", topTrackArtists);
                                                                         bundle.putStringArrayList("artists", artists);
                                                                         bundle.putStringArrayList("genres", genres);
                                                                         bundle.putStringArrayList("topTrackImg", topTrackImgs);
