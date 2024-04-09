@@ -32,11 +32,11 @@ public class FeedActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        ImageButton commentButton =  (ImageButton) findViewById(R.id.comment_button);
-        commentButton.setOnClickListener(view -> {
-            Toast.makeText(FeedActivity.this, "Comments Page", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(FeedActivity.this, CommentViewActivity.class);
-            startActivity(intent);
-        });
+//        ImageButton commentButton =  (ImageButton) findViewById(R.id.comment_button);
+//        commentButton.setOnClickListener(view -> {
+//            Toast.makeText(FeedActivity.this, "Comments Page", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(FeedActivity.this, CommentViewActivity.class);
+//            startActivity(intent);
+//        });
     }
 }

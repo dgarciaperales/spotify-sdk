@@ -26,10 +26,10 @@
                 app:cornerRadius="0dp" />
 
             <Button
-                android:id="@+id/lc_button"
+                android:id="@+id/followed_button"
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
-                android:text="@string/liked_commented"
+                android:text="@string/followed"
                 android:textSize="16sp"
                 app:cornerRadius="0dp" />
 
@@ -76,14 +76,34 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- Search bar -->
-                    <TextView
-                        android:id="@+id/username"
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/persons_username"
-                        android:textSize="21sp"
-                        android:background="@color/darker_grey"/>
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/username"
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/persons_username"
+                            android:textSize="18sp"
+                            android:background="@color/darker_grey"/>
+
+                        <Button
+                            android:id="@+id/follow_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/follow"
+                            android:textSize="18sp"
+                            app:cornerRadius="0dp" />
+
+
+                    </LinearLayout>
+
+                    <!-- Search bar -->
+
 
                     <ImageView
                         android:layout_marginTop="4dp"
@@ -130,29 +150,6 @@
                         android:text="@string/top_genre"
                         android:textSize="16sp"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:background="@color/darker_grey">
-
-                        <ImageButton
-                            android:id="@+id/like_button"
-                            android:layout_width="50dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/like"
-                            android:scaleType="fitCenter"
-                            android:contentDescription="@string/like_button_for_users"/>
-
-                        <ImageButton
-                            android:id="@+id/comment_button"
-                            android:layout_width="50dp"
-                            android:layout_height="48dp"
-                            android:src="@drawable/comment"
-                            android:scaleType="fitCenter"
-                            android:contentDescription="@string/comment_for_users"/>
-
-                    </LinearLayout>
 
 
                 </LinearLayout>
