@@ -18,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/light_purple"
-            android:text="Top Tracks" />
+            android:text="Tracks" />
 
         <Button
             android:id="@+id/btn_TopArtist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/light_purple"
-            android:text="Top Artists"
+            android:text="Artists"
             android:layout_marginLeft="10dp"/>
 
         <Button
@@ -33,10 +33,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/light_purple"
-            android:text="Top Genres"
+            android:text="Genres"
             android:layout_marginLeft="10dp"/>
-    </LinearLayout>
 
+
+        <ImageButton
+            android:id="@+id/exitBtn"
+            android:layout_width="29dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:backgroundTint="@color/light_purple"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/exit_button" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_RecArtist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/light_purple"
+        android:text="Rec. Artist"/>
     <LinearLayout
         android:id="@+id/myLayout"
         android:layout_width="match_parent"
@@ -48,7 +63,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal">
 
         <ImageView

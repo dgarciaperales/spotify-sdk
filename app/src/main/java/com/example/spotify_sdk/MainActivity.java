@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +134,13 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        View cardView = LayoutInflater.from(this).inflate(R.layout.past_wrapped_card, null);
+        ImageButton ImagePastWrapped = cardView.findViewById(R.id.album_cover);
+        ImagePastWrapped.setOnClickListener( v -> {
+            Intent intent = new Intent(MainActivity.this, DisplayWrapped.class);
+            startActivity(intent);
+        });
+
     }
 
     private void showToast(String message) {
@@ -208,6 +218,38 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("Firestore", "Unable to get albumCover value");
                                 }
                                 scrollContentLayout.addView(cardView);
+                                cardView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(MainActivity.this, DisplayWrapped.class);
+
+                                        Log.d("Clicked: ", wrapName);
+
+                                        ArrayList<String> topTracks = (ArrayList<String>) document.get("topTracks");
+                                        ArrayList<String> topTrackArtists = (ArrayList<String>) document.get("topTrackArtists");
+                                        ArrayList<String> topTrackImgs = (ArrayList<String>) document.get("topTrackImgs");
+
+                                        ArrayList<String> topArtists = (ArrayList<String>) document.get("topArtists");
+                                        ArrayList<String> topArtistImgs = (ArrayList<String>) document.get("topArtistImgs");
+
+                                        ArrayList<String> recArtists = (ArrayList<String>) document.get("recArtists");
+                                        ArrayList<String> recArtistImgs = (ArrayList<String>) document.get("recArtistImgs");
+
+                                        ArrayList<String> topGenres = (ArrayList<String>) document.get("topGenres");
+
+                                        Bundle bundle = new Bundle();
+                                        bundle.putStringArrayList("tracks", topTracks);
+                                        bundle.putStringArrayList("trackArtists", topTrackArtists);
+                                        bundle.putStringArrayList("artists", topArtists);
+                                        bundle.putStringArrayList("genres", topGenres);
+                                        bundle.putStringArrayList("topTrackImg", topTrackImgs);
+                                        bundle.putStringArrayList("topArtistImg", topArtistImgs);
+                                        bundle.putStringArrayList("recArtists", recArtists);
+                                        bundle.putStringArrayList("recArtistsImg", recArtistImgs);
+                                        intent.putExtras(bundle);
+                                        startActivity(intent);
+                                    }
+                                });
                             } else {
                                 Log.d("Firestore", "No such document");
                             }

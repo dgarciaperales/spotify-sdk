@@ -2,16 +2,38 @@ package com.example.spotify_sdk;
 
 import android.os.Bundle;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.app.ProgressDialog;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.LinearLayout; // Add this line
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import android.graphics.drawable.Drawable;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import android.os.Handler;
+import com.google.android.material.tabs.TabLayout;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import android.graphics.Canvas;
 import java.io.OutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,7 +49,7 @@ import java.util.Objects;
 
 
 public class DisplayWrapped extends AppCompatActivity {
-    Button btnTopTrack, btnTopArtist, btnTopGenre;
+    Button btnTopTrack, btnTopArtist, btnTopGenre, btnRecArtist;
     TextView name1, name2, name3, name4, name5;
     ImageView image1, image2, image3, image4, image5;
 
@@ -40,7 +62,9 @@ public class DisplayWrapped extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         btnTopTrack = findViewById(R.id.btn_TopTrack);
         btnTopArtist = findViewById(R.id.btn_TopArtist);
+        ImageButton exitBtn = findViewById(R.id.exitBtn);
         btnTopGenre = findViewById(R.id.btn_Genre);
+        btnRecArtist = findViewById(R.id.btn_RecArtist);
         name1 = findViewById(R.id.name1);
         name2 = findViewById(R.id.name2);
         name3 = findViewById(R.id.name3);
@@ -51,23 +75,55 @@ public class DisplayWrapped extends AppCompatActivity {
         image3 = findViewById(R.id.image3);
         image4 = findViewById(R.id.image4);
         image5 = findViewById(R.id.image5);
+        clearSlate();
+        ArrayList<String> trackImage = bundle.getStringArrayList("topTrackImg");
+        ArrayList<String> tracks = bundle.getStringArrayList("tracks");
+        ArrayList<String> trackArtists = bundle.getStringArrayList("trackArtists");
+
+        Glide.with(DisplayWrapped.this).load(trackImage.get(0)).into(image1);
+        String text0 = tracks.get(0) + " - " + trackArtists.get(0);
+        name1.setText(text0);
+
+        Glide.with(DisplayWrapped.this).load(trackImage.get(1)).into(image2);
+        String text1 = tracks.get(1) + " - " + trackArtists.get(1);
+        name2.setText(text1);
+
+        Glide.with(DisplayWrapped.this).load(trackImage.get(2)).into(image3);
+        String text2 = tracks.get(2) + " - " + trackArtists.get(2);
+        name3.setText(text2);
+
+        Glide.with(DisplayWrapped.this).load(trackImage.get(3)).into(image4);
+        String text3 = tracks.get(3) + " - " + trackArtists.get(3);
+        name4.setText(text3);
+
+        Glide.with(DisplayWrapped.this).load(trackImage.get(4)).into(image5);
+        String text4 = tracks.get(4) + " - " + trackArtists.get(4);
+        name5.setText(text4);
 
         btnTopTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearSlate();
-                ArrayList<String> trackImage = bundle.getStringArrayList("topTrackImg");
-                ArrayList<String> tracks = bundle.getStringArrayList("tracks");
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(0)).into(image1);
-                name1.setText(tracks.get(0));
+                String text0 = tracks.get(0) + " - " + trackArtists.get(0);
+                name1.setText(text0);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(1)).into(image2);
-                name2.setText(tracks.get(1));
+                String text1 = tracks.get(1) + " - " + trackArtists.get(1);
+                name2.setText(text1);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(2)).into(image3);
-                name3.setText(tracks.get(2));
+                String text2 = tracks.get(2) + " - " + trackArtists.get(2);
+                name3.setText(text2);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(3)).into(image4);
-                name4.setText(tracks.get(3));
+                String text3 = tracks.get(3) + " - " + trackArtists.get(3);
+                name4.setText(text3);
+
                 Glide.with(DisplayWrapped.this).load(trackImage.get(4)).into(image5);
-                name5.setText(tracks.get(4));
+                String text4 = tracks.get(4) + " - " + trackArtists.get(4);
+                name5.setText(text4);
 
             }
         });
@@ -90,6 +146,14 @@ public class DisplayWrapped extends AppCompatActivity {
 
             }
         });
+
+        exitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayWrapped.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
         btnTopGenre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +165,24 @@ public class DisplayWrapped extends AppCompatActivity {
                 name4.setText(genre.get(3));
                 name5.setText(genre.get(4));
 
+            }
+        });
+        btnRecArtist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearSlate();
+                ArrayList<String> recArtist = bundle.getStringArrayList("recArtists");
+                ArrayList<String> recArtistImg = bundle.getStringArrayList("recArtistsImg");
+                Glide.with(DisplayWrapped.this).load(recArtistImg.get(0)).into(image1);
+                name1.setText(recArtist.get(0));
+                Glide.with(DisplayWrapped.this).load(recArtistImg.get(1)).into(image2);
+                name2.setText(recArtist.get(1));
+                Glide.with(DisplayWrapped.this).load(recArtistImg.get(2)).into(image3);
+                name3.setText(recArtist.get(2));
+                Glide.with(DisplayWrapped.this).load(recArtistImg.get(3)).into(image4);
+                name4.setText(recArtist.get(3));
+                Glide.with(DisplayWrapped.this).load(recArtistImg.get(4)).into(image5);
+                name5.setText(recArtist.get(4));
             }
         });
 

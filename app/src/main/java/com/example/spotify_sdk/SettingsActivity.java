@@ -1,12 +1,18 @@
 package com.example.spotify_sdk;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.ImageButton;
-import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import android.util.Log;
+
+
+
+
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -37,6 +43,42 @@ public class SettingsActivity extends AppCompatActivity {
             Intent intent = new Intent(SettingsActivity.this, StartActivity.class);
             startActivity(intent);
         });
+
+
+
+        //update profile functionality -->
+        Button updateProfile = findViewById(R.id.update_profile);
+        updateProfile.setOnClickListener( v -> {
+
+
+
+
+
+        });
+        //delete account functionality -->
+        Button deleteAccount  = findViewById(R.id.delete_account);
+        deleteAccount.setOnClickListener(v -> {
+            // Get the current user
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            // Check if the user is signed in
+            if (currentUser != null) {
+                // Delete the user's account
+                currentUser.delete()
+                        .addOnSuccessListener(aVoid -> {
+                            // Account deleted successfully
+                            // Redirect to the start activity or any other appropriate screen
+                            Intent intent = new Intent(SettingsActivity.this, StartActivity.class);
+                            startActivity(intent);
+                        })
+                        .addOnFailureListener(e -> {
+                            // Handle errors
+                            // For example, display a toast message or log the error
+                            Log.e("TAG", "Error deleting account", e);
+                        });
+            }
+        });
+
     }
 
 }
