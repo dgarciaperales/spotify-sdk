@@ -4,23 +4,25 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.EditText;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import android.util.Log;
 
-
-
-
-
-
 public class SettingsActivity extends AppCompatActivity {
+    private FirebaseUser currentUser; // Declare currentUser at class level
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        // Initialize currentUser
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //navigation to home/wrapped page
         ImageButton wrappedButton = findViewById(R.id.wrapped_btn);
@@ -36,7 +38,6 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
         //log out of account --> navigates to first page StartActivity
         Button logOut = findViewById(R.id.log_out);
         logOut.setOnClickListener( v -> {
@@ -44,17 +45,37 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        //reset password functionality -->
+        //reset password functionality -->
+        //reset password functionality -->
+        Button resetPassword = findViewById(R.id.update_profile);
+        resetPassword.setOnClickListener(v -> {
+            // Get the current user
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
+            // Check if the user is signed in and has an email address
+            if (user != null && user.getEmail() != null) {
+                String emailAddress = user.getEmail();
 
-        //update profile functionality -->
-        Button updateProfile = findViewById(R.id.update_profile);
-        updateProfile.setOnClickListener( v -> {
-
-
-
-
-
+                // Send password reset email
+                FirebaseAuth.getInstance().sendPasswordResetEmail(emailAddress)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                // Password reset email sent successfully
+                                Log.d("RESET USER", "Email sent.");
+                            } else {
+                                // Password reset email sending failed
+                                Log.e("RESET USER", "Failed to send password reset email.", task.getException());
+                            }
+                        });
+            } else {
+                // User is not signed in or doesn't have an email address
+                Log.e("RESET USER", "User is not signed in or does not have an email address.");
+            }
         });
+
+
+
         //delete account functionality -->
         Button deleteAccount  = findViewById(R.id.delete_account);
         deleteAccount.setOnClickListener(v -> {
@@ -78,7 +99,5 @@ public class SettingsActivity extends AppCompatActivity {
                         });
             }
         });
-
     }
-
 }

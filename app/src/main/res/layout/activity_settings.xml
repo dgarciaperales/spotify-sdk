@@ -23,13 +23,13 @@
         android:layout_width="180dp"
         android:layout_height="60dp"
         android:backgroundTint="@color/dark_pink"
-        android:text="@string/update_profile"
+        android:text="Reset Password"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/delete_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/delete_account"
@@ -92,5 +92,8 @@
             android:src="@drawable/setting"
             android:scaleType="fitCenter"
             android:contentDescription="@string/settings_description"/>
+
+
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
