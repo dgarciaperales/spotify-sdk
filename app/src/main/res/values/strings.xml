@@ -39,6 +39,8 @@
     <string name="comment_for_users">comment for users</string>
     <string name="top_tracks">Top Tracks</string>
     <string name="enter">enter</string>
+    <string name="follow">Follow</string>
+    <string name="followed">Followed</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>
