@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             TextView TimeFrameView = cardView.findViewById(R.id.time_frame_view);
             TextView TimeStampView = cardView.findViewById(R.id.time_stamp_view);
             ImageButton AlbumCover = cardView.findViewById(R.id.album_cover);
+            ImageButton postWrapped = cardView.findViewById(R.id.postwrapped);
 
             //get timestamp and timeframe value for each wrapped
 
@@ -250,6 +251,15 @@ public class MainActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     }
                                 });
+
+                                postWrapped.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        createPost(wrapName.toLowerCase().replaceAll("\\s", ""));
+                                    }
+                                });
+
+
                             } else {
                                 Log.d("Firestore", "No such document");
                             }
@@ -262,5 +272,69 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void createPost(String wrappedDocId){
+        //get wrapped that corresponds to button clicked and pass in as an argument
+        //fetch data that will be used in the post and store in hashmaps
+        String userEmail = auth.getCurrentUser().getEmail();
+        DocumentReference wrappedForPost = firestore.collection("users").document(userEmail).collection("wrapped").document(wrappedDocId);
+        wrappedForPost.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot != null){
+                    //username, top artist, top genre, 5 top tracks
+                    ArrayList<String> topArtists = (ArrayList<String>) documentSnapshot.get("topArtists");
+                    String topArtist = topArtists.get(0);
+                    ArrayList<String> topGenres = (ArrayList<String>) documentSnapshot.get("topGenres");
+                    String topGenre = topGenres.get(0);
+                    ArrayList<String> topTracks = (ArrayList<String>) documentSnapshot.get("topTracks");
+                    ArrayList<String> topArtistsImgs = (ArrayList<String>) documentSnapshot.get("topArtistImgs");
+                    String topArtistImg = topArtistsImgs.get(0);
+                    CollectionReference posts = firestore.collection("posts");
+                    DocumentReference postStats = posts.document("postStats");
+                    //getting post counter
+                    postStats.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Long postCounter = (Long) documentSnapshot.get("postCounter");
+                            String postName = "post" + postCounter;
+                            Map<String, Object> info = new HashMap<>();
+                            info.put("topArtist", topArtist);
+                            info.put("topArtistImg", topArtistImg);
+                            info.put("topGenre", topGenre);
+                            info.put("topTracks", topTracks);
+                            info.put("author", userEmail);
+                            posts.document(postName)
+                                    .set(info)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Log.d("Firestore", "New post added");
+                                            // Handle success
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.e("Firestore", "New post not added", e);
+                                            // Handle failure
+                                        }
+                                    });
+                            Map<String, Object> newCount = new HashMap<>();
+                            newCount.put("postCounter", postCounter+1);
+                            postStats.update(newCount);
+                        }
+                    });
+                }
+            }
+        });
+        //fetch post counter from poststats document
+        //add to posts collection using post counter to make a new doc
+        //^ using data fetched from wrap document earlier
+        //also get current users email and add as username, attribute of post doc
+        //create string array for comments
+        //create counter for likes
+        //increment post counter
     }
 }
