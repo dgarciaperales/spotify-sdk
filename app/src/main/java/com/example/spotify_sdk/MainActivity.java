@@ -291,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> topTracks = (ArrayList<String>) documentSnapshot.get("topTracks");
                     ArrayList<String> topTrackArtists = (ArrayList<String>) documentSnapshot.get("topTrackArtists");
                     ArrayList<String> topArtistsImgs = (ArrayList<String>) documentSnapshot.get("topArtistImgs");
-                    String topArtistImg = topArtistsImgs.get(0);
+                    String topArtistImage = topArtistsImgs.get(0);
+                    //Log.d("topartistimg", topArtistImg);
                     CollectionReference posts = firestore.collection("posts");
                     DocumentReference postStats = posts.document("postStats");
                     //getting post counter
@@ -302,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                             String postName = "post" + postCounter;
                             Map<String, Object> info = new HashMap<>();
                             info.put("topArtist", topArtist);
-                            info.put("topArtistImg", topArtistImg);
+                            info.put("topArtistImg", topArtistImage);
                             info.put("topGenre", topGenre);
                             info.put("topTracks", topTracks);
                             info.put("topTrackArtists", topTrackArtists);

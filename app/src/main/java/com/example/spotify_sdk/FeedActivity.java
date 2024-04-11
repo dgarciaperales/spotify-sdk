@@ -79,7 +79,7 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     private void updateFeed(Integer totalPosts, LinearLayout scrollContentLayout){
-        for (int i = 0; i <= totalPosts - 1; i++) {
+        for (int i = totalPosts-1; i >= 0; i--) {
             View cardView = LayoutInflater.from(this).inflate(R.layout.post_card, null);
             TextView topArtist = cardView.findViewById(R.id.topArtist);
             TextView topGenre = cardView.findViewById(R.id.topGenre);
@@ -97,19 +97,20 @@ public class FeedActivity extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot != null){
                         List<String> topTracks = (List<String>) documentSnapshot.get("topTracks");
-                        //List<String> topTrackArtists = (List<String>) documentSnapshot.get("topTrackArtists");
+                        List<String> topTrackArtists = (List<String>) documentSnapshot.get("topTrackArtists");
                         String topArtistString = documentSnapshot.getString("topArtist");
                         String topGenreString = documentSnapshot.getString("topGenre");
                         String usernameString = documentSnapshot.getString("author");
+
                         username.setText(usernameString);
-                        topArtist.setText("my top artist : " + topArtistString);
-                        topGenre.setText("my top genre : " + topGenreString);
-                        topTrack1.setText("my top track : " + topTracks.get(0));
-                        //topTrackArtist1.setText("my top track artist: " + topTrackArtists.get(f));
-                        topTrack2.setText("my top track : " + topTracks.get(1));
-                        //topTrackArtist2.setText("my top track artist: " + topTrackArtists.get(f));
-                        topTrack3.setText("my top track : " + topTracks.get(2));
-                        //topTrackArtist3.setText("my top track artist: " + topTrackArtists.get(f));
+                        topArtist.setText(topArtistString);
+                        topGenre.setText(topGenreString);
+                        topTrack1.setText("#1: " + topTracks.get(0));
+                        topTrackArtist1.setText(topTrackArtists.get(0));
+                        topTrack2.setText("#2: " + topTracks.get(1));
+                        topTrackArtist2.setText(topTrackArtists.get(1));
+                        topTrack3.setText("#3: " + topTracks.get(2));
+                        topTrackArtist3.setText(topTrackArtists.get(2));
                         scrollContentLayout.addView(cardView);
                     }
 
