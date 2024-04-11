@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
                     ArrayList<String> topGenres = (ArrayList<String>) documentSnapshot.get("topGenres");
                     String topGenre = topGenres.get(0);
                     ArrayList<String> topTracks = (ArrayList<String>) documentSnapshot.get("topTracks");
+                    ArrayList<String> topTrackArtists = (ArrayList<String>) documentSnapshot.get("topTrackArtists");
                     ArrayList<String> topArtistsImgs = (ArrayList<String>) documentSnapshot.get("topArtistImgs");
                     String topArtistImg = topArtistsImgs.get(0);
                     CollectionReference posts = firestore.collection("posts");
@@ -304,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
                             info.put("topArtistImg", topArtistImg);
                             info.put("topGenre", topGenre);
                             info.put("topTracks", topTracks);
+                            info.put("topTrackArtists", topTrackArtists);
                             info.put("author", userEmail);
                             posts.document(postName)
                                     .set(info)
