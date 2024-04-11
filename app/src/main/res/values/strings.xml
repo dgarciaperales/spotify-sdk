@@ -31,8 +31,8 @@
     <string name="tentative">like and comment and share buttons will go here</string>
     <string name="feed_Button">Feed</string>
     <string name="liked_commented">Liked/Commented</string>
-    <string name="top_artists">Top Artists</string>
-    <string name="top_genres">Top Genres</string>
+    <string name="top_artists">Top Artist</string>
+    <string name="top_genres">Top Genre</string>
     <string name="top_genre">Top Genre</string>
     <string name="the_user_s_top_artist">The user\'s top artist</string>
     <string name="like_button_for_users">like button for users</string>
@@ -41,6 +41,7 @@
     <string name="enter">enter</string>
     <string name="follow">Follow</string>
     <string name="followed">Followed</string>
+    <string name="refresh">Refresh</string>
     <string-array name="timeSpans">
         <item>4 weeks</item>
         <item>6 months</item>

@@ -19,7 +19,7 @@
             <!-- Search bar -->
             <Button
                 android:id="@+id/feed_button"
-                android:layout_width="175dp"
+                android:layout_width="125dp"
                 android:layout_height="wrap_content"
                 android:text="@string/feed_Button"
                 android:textSize="16sp"
@@ -27,9 +27,17 @@
 
             <Button
                 android:id="@+id/followed_button"
-                android:layout_width="190dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:text="@string/followed"
+                android:textSize="16sp"
+                app:cornerRadius="0dp" />
+
+            <Button
+                android:id="@+id/refresh_btn"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh"
                 android:textSize="16sp"
                 app:cornerRadius="0dp" />
 
@@ -62,99 +70,12 @@
             android:layout_height="match_parent"
             android:background="#6C4CAC">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/user_post"
+            <LinearLayout
+                android:id="@+id/postLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                android:orientation="vertical" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
-
-                        <TextView
-                            android:id="@+id/username"
-                            android:layout_width="180dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/persons_username"
-                            android:textSize="18sp"
-                            android:background="@color/darker_grey"/>
-
-                        <Button
-                            android:id="@+id/follow_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/follow"
-                            android:textSize="18sp"
-                            app:cornerRadius="0dp" />
-
-
-                    </LinearLayout>
-
-                    <!-- Search bar -->
-
-
-                    <ImageView
-                        android:layout_marginTop="4dp"
-                        android:id="@+id/top_artist_pic"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:src="@drawable/user"
-                        android:scaleType="fitCenter"
-                        android:layout_marginStart="140dp"
-                        android:contentDescription="@string/the_user_s_top_artist"/>
-
-                    <!--                    the three dots thing-->
-                    <!--                    <ImageButton-->
-                    <!--                        android:-->
-                    <!--                        android:layout_width="50dp"-->
-                    <!--                        android:layout_height="50dp"-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/artists_summary"
-                            android:layout_width="185dp"
-                            android:layout_height="50dp"
-                            android:text="@string/top_artists"
-                            android:textSize="16sp"/>
-
-                        <TextView
-                            android:id="@+id/tracks_summary"
-                            android:layout_width="185dp"
-                            android:layout_height="50dp"
-                            android:text="@string/top_tracks"
-                            android:textSize="16sp"/>
-
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/top_genre"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="@string/top_genre"
-                        android:textSize="16sp"/>
-
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
         </ScrollView>
     </LinearLayout>
 
