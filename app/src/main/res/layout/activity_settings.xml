@@ -18,18 +18,33 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <!-- New Reset Email button -->
+
     <Button
         android:id="@+id/update_profile"
         android:layout_width="180dp"
         android:layout_height="60dp"
+        android:layout_marginTop="60dp"
         android:backgroundTint="@color/dark_pink"
         android:text="Reset Password"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/delete_account"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/settings_title" />
 
+    <Button
+        android:id="@+id/reset_email"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:backgroundTint="@color/dark_pink"
+        android:text="Reset Email"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/delete_account"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/update_profile" />
 
     <Button
         android:id="@+id/delete_account"
@@ -38,12 +53,10 @@
         android:backgroundTint="@color/dark_pink"
         android:text="@string/delete_account"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@id/log_out"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-
+        app:layout_constraintTop_toBottomOf="@+id/reset_email"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/update_profile" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/log_out" />
 
     <Button
         android:id="@+id/log_out"
@@ -52,10 +65,10 @@
         android:backgroundTint="@color/dark_pink"
         android:text="@string/log_out"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@id/navigation_buttons"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/delete_account"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/delete_account" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/navigation_buttons" />
 
     <LinearLayout
         android:id="@+id/navigation_buttons"
@@ -65,9 +78,9 @@
         android:orientation="horizontal"
         android:background="@color/light_green"
         android:padding="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
             android:id="@+id/wrapped_btn"
@@ -93,7 +106,12 @@
             android:scaleType="fitCenter"
             android:contentDescription="@string/settings_description"/>
 
-
+        <EditText
+            android:id="@+id/new_email_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter New Email"
+            android:inputType="textEmailAddress"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

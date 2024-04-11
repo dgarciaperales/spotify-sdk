@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
+
 
 import android.util.Log;
 
@@ -45,8 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //reset password functionality -->
-        //reset password functionality -->
+
         //reset password functionality -->
         Button resetPassword = findViewById(R.id.update_profile);
         resetPassword.setOnClickListener(v -> {
@@ -73,6 +72,55 @@ public class SettingsActivity extends AppCompatActivity {
                 Log.e("RESET USER", "User is not signed in or does not have an email address.");
             }
         });
+
+
+
+
+
+
+        //reset email functionality -->
+        //reset email functionality -->
+        Button resetEmail = findViewById(R.id.reset_email);
+        resetEmail.setOnClickListener(v -> {
+            // Get the current user
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            // Check if the user is signed in
+            if (currentUser != null) {
+                // Get the current email address of the user
+                String currentEmail = currentUser.getEmail();
+
+                // Find the EditText for the new email address
+                EditText newEmailEditText = findViewById(R.id.new_email_edit_text);
+                // Retrieve the text from the EditText
+                String newEmail = newEmailEditText.getText().toString().trim();
+
+                // Check if the new email is not empty and is different from the current email
+                if (!newEmail.isEmpty() && !newEmail.equals(currentEmail)) {
+                    // Update the email address of the user
+                    currentUser.updateEmail(newEmail)
+                            .addOnSuccessListener(aVoid -> {
+                                // Email updated successfully
+                                // You can notify the user or perform any other action here
+                                Log.d("RESET EMAIL", "Email updated successfully.");
+                            })
+                            .addOnFailureListener(e -> {
+                                // Handle errors
+                                // For example, display a toast message or log the error
+                                Log.e("RESET EMAIL", "Error updating email", e);
+                            });
+                } else {
+                    // The new email is empty or same as the current email
+                    // You can display an error message or take appropriate action
+                    Log.e("RESET EMAIL", "New email is empty or same as current email.");
+                }
+            } else {
+                // User is not signed in
+                // You can redirect the user to sign in or handle the scenario appropriately
+                Log.e("RESET EMAIL", "User is not signed in.");
+            }
+        });
+
 
 
 
