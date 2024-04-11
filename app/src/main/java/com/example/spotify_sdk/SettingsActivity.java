@@ -1,27 +1,31 @@
 package com.example.spotify_sdk;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.InputType;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.content.Intent;
 import android.widget.Button;
-import android.widget.EditText;
-
+import android.widget.Toast;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-
-import android.util.Log;
+import com.google.firebase.auth.ActionCodeSettings;
 
 public class SettingsActivity extends AppCompatActivity {
-    private FirebaseUser currentUser; // Declare currentUser at class level
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        // Initialize currentUser
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         //navigation to home/wrapped page
@@ -45,107 +49,101 @@ public class SettingsActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-
         //reset password functionality -->
         Button resetPassword = findViewById(R.id.update_profile);
         resetPassword.setOnClickListener(v -> {
-            // Get the current user
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-            // Check if the user is signed in and has an email address
             if (user != null && user.getEmail() != null) {
                 String emailAddress = user.getEmail();
-
-                // Send password reset email
                 FirebaseAuth.getInstance().sendPasswordResetEmail(emailAddress)
                         .addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {
-                                // Password reset email sent successfully
                                 Log.d("RESET USER", "Email sent.");
                             } else {
-                                // Password reset email sending failed
                                 Log.e("RESET USER", "Failed to send password reset email.", task.getException());
                             }
                         });
             } else {
-                // User is not signed in or doesn't have an email address
                 Log.e("RESET USER", "User is not signed in or does not have an email address.");
             }
         });
 
-
-
-
-
-
         //reset email functionality -->
         //reset email functionality -->
+        //reset email functionality -->
+
+
+        /*
         Button resetEmail = findViewById(R.id.reset_email);
         resetEmail.setOnClickListener(v -> {
-            // Get the current user
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            if (currentUser != null && currentUser.getEmail() != null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Enter New Email");
+                final EditText input = new EditText(this);
+                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                builder.setView(input);
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newEmailAddress = input.getText().toString().trim();
+                        if (!isValidEmail(newEmailAddress)) {
+                            Toast.makeText(SettingsActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
-            // Check if the user is signed in
-            if (currentUser != null) {
-                // Get the current email address of the user
-                String currentEmail = currentUser.getEmail();
+                        currentUser.verifyBeforeUpdateEmail(newEmailAddress)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        // Email address verification successful, proceed with updating
+                                        currentUser.updateEmail(newEmailAddress)
+                                                .addOnCompleteListener(emailUpdateTask -> {
+                                                    if (emailUpdateTask.isSuccessful()) {
+                                                        Log.d("RESET EMAIL", "Email updated to: " + newEmailAddress);
+                                                    } else {
+                                                        Log.e("RESET EMAIL", "Failed to update email.", emailUpdateTask.getException());
+                                                    }
+                                                });
+                                    } else {
+                                        // Email address verification failed
+                                        Log.e("RESET EMAIL", "Failed to verify email address.", task.getException());
+                                        Toast.makeText(SettingsActivity.this, "Failed to verify email address", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
 
-                // Find the EditText for the new email address
-                EditText newEmailEditText = findViewById(R.id.new_email_edit_text);
-                // Retrieve the text from the EditText
-                String newEmail = newEmailEditText.getText().toString().trim();
-
-                // Check if the new email is not empty and is different from the current email
-                if (!newEmail.isEmpty() && !newEmail.equals(currentEmail)) {
-                    // Update the email address of the user
-                    currentUser.updateEmail(newEmail)
-                            .addOnSuccessListener(aVoid -> {
-                                // Email updated successfully
-                                // You can notify the user or perform any other action here
-                                Log.d("RESET EMAIL", "Email updated successfully.");
-                            })
-                            .addOnFailureListener(e -> {
-                                // Handle errors
-                                // For example, display a toast message or log the error
-                                Log.e("RESET EMAIL", "Error updating email", e);
-                            });
-                } else {
-                    // The new email is empty or same as the current email
-                    // You can display an error message or take appropriate action
-                    Log.e("RESET EMAIL", "New email is empty or same as current email.");
-                }
+                builder.show();
             } else {
-                // User is not signed in
-                // You can redirect the user to sign in or handle the scenario appropriately
-                Log.e("RESET EMAIL", "User is not signed in.");
+                Log.e("RESET EMAIL", "User is not signed in or does not have an email address.");
             }
         });
-
-
-
+            */
 
         //delete account functionality -->
-        Button deleteAccount  = findViewById(R.id.delete_account);
+        Button deleteAccount = findViewById(R.id.delete_account);
         deleteAccount.setOnClickListener(v -> {
-            // Get the current user
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            // Check if the user is signed in
             if (currentUser != null) {
-                // Delete the user's account
                 currentUser.delete()
                         .addOnSuccessListener(aVoid -> {
-                            // Account deleted successfully
-                            // Redirect to the start activity or any other appropriate screen
                             Intent intent = new Intent(SettingsActivity.this, StartActivity.class);
                             startActivity(intent);
                         })
                         .addOnFailureListener(e -> {
-                            // Handle errors
-                            // For example, display a toast message or log the error
                             Log.e("TAG", "Error deleting account", e);
                         });
             }
         });
     }
+
+    private boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
 }
+

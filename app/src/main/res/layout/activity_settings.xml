@@ -15,11 +15,9 @@
         android:text="@string/settings_title"
         android:textSize="28sp"
         android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- New Reset Email button -->
-
+    <!-- Reset Password Button -->
     <Button
         android:id="@+id/update_profile"
         android:layout_width="180dp"
@@ -33,19 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_title" />
 
-    <Button
-        android:id="@+id/reset_email"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
-        android:backgroundTint="@color/dark_pink"
-        android:text="Reset Email"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/delete_account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/update_profile" />
-
+    <!-- Delete Account Button -->
     <Button
         android:id="@+id/delete_account"
         android:layout_width="180dp"
@@ -53,11 +39,12 @@
         android:backgroundTint="@color/dark_pink"
         android:text="@string/delete_account"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/reset_email"
+        app:layout_constraintTop_toBottomOf="@+id/update_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/log_out" />
 
+    <!-- Logout Button -->
     <Button
         android:id="@+id/log_out"
         android:layout_width="180dp"
@@ -72,7 +59,6 @@
 
     <LinearLayout
         android:id="@+id/navigation_buttons"
-        android:backgroundTint="@color/grey"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
