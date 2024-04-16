@@ -58,7 +58,6 @@ public class GenerateWrapped extends AppCompatActivity {
         Spinner dropdown = findViewById(R.id.spinner);
         Button getRequestBtn = findViewById(R.id.enter_btn);
         Button backBtn = findViewById(R.id.back_btn);
-        Button displayBtn = findViewById(R.id.display_btn);
         TextView profileTextView = findViewById(R.id.profile_text_view);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.timeSpans, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -76,13 +75,6 @@ public class GenerateWrapped extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GenerateWrapped.this, MainActivity.class));
-                finish();
-            }
-        });
-        displayBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
                 finish();
             }
         });
@@ -249,6 +241,7 @@ public class GenerateWrapped extends AppCompatActivity {
                                                                         setTextAsync("\nTop Tracks: " + tracks.toString() + "\n\nTop Artists: " + artists.toString() + "\n\nTop Genres: " + genres.toString() + "\n\n Recommended Artists: " + relatedArtists.toString(), profileTextView);
                                                                         Timestamp timestamp = new Timestamp(new Date());
                                                                         addWrapped(relatedArtists, recArtistImgs, artists, topArtistImgs, genres, tracks, topTrackArtists, topTrackImgs, timestamp, timeframe);
+                                                                        startActivity(intent);
                                                                     } catch (JSONException e) {
                                                                         Log.d("JSON", "Failed to parse recommendations: " + e);
                                                                         showToast("Failed to parse recommendations, watch Logcat for more details");

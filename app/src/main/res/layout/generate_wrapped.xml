@@ -30,28 +30,20 @@
 
         <Button
             android:id="@+id/enter_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="168dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
+            android:layout_marginStart="120dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
-            android:text="Enter" />
+            android:text="Generate Wrapped" />
 
         <TextView
             android:id="@+id/profile_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="TextView" />
+            android:text="" />
 
-        <Button
-            android:id="@+id/display_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="125dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:text="Display Wrapped" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
