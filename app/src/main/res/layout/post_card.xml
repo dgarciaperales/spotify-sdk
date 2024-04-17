@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -47,8 +48,8 @@
 
 
             <ImageView
+                android:id="@+id/feedArtistImg"
                 android:layout_marginTop="4dp"
-                android:id="@+id/top_artist_pic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/user"
@@ -77,8 +78,8 @@
 
                     <TextView
                         android:id="@+id/topArtist"
-                        android:layout_width="174dp"
-                        android:layout_height="50dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="61dp"
                         android:textSize="16sp" />
 
                     <TextView

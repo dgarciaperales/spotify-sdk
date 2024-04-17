@@ -1,19 +1,23 @@
 package com.example.spotify_sdk;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.bumptech.glide.Glide;
 import android.media.Image;
 import android.os.Bundle;
-
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
 import android.view.View;
 import android.content.Intent;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.io.OutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import android.net.Uri;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -90,6 +94,7 @@ public class FeedActivity extends AppCompatActivity {
             TextView topTrack3 = cardView.findViewById(R.id.topTrack3);
             TextView topTrackArtist3 = cardView.findViewById(R.id.topTrackArtist3);
             TextView username = cardView.findViewById(R.id.username);
+            ImageView ArtistImg = cardView.findViewById(R.id.feedArtistImg);
 
             CollectionReference posts = firestore.collection("posts");
             posts.document("post"+i).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -98,12 +103,15 @@ public class FeedActivity extends AppCompatActivity {
                     if(documentSnapshot != null){
                         List<String> topTracks = (List<String>) documentSnapshot.get("topTracks");
                         List<String> topTrackArtists = (List<String>) documentSnapshot.get("topTrackArtists");
+                        List<String> topTracksImg = (List<String>) documentSnapshot.get("topTrackImgs");
+                        String topArtistImg = documentSnapshot.getString("topArtistImg");
                         String topArtistString = documentSnapshot.getString("topArtist");
                         String topGenreString = documentSnapshot.getString("topGenre");
                         String usernameString = documentSnapshot.getString("author");
 
                         username.setText(usernameString);
                         topArtist.setText(topArtistString);
+                        Glide.with(FeedActivity.this).load(topArtistImg).into(ArtistImg);
                         topGenre.setText(topGenreString);
                         topTrack1.setText("#1: " + topTracks.get(0));
                         topTrackArtist1.setText(topTrackArtists.get(0));
