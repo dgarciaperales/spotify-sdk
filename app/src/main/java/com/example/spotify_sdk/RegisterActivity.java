@@ -23,6 +23,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -111,6 +112,14 @@ public class RegisterActivity extends AppCompatActivity {
                                     Toast.makeText(RegisterActivity.this, "Wrapper counter not made", Toast.LENGTH_SHORT).show();
                                 }
                             });
+                    Map<String, ArrayList<String>> following = new HashMap<>();
+                    following.put("following", null);
+                    usersRef.document(email).set(following, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d("Firestore", "Following collection initialized");
+                        }
+                    });
                     usersRef.document(email).collection("wrapped")
                             .add(new HashMap<>())
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
