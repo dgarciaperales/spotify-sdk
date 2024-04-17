@@ -57,7 +57,7 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     private void followUser(String followedUserId, Button followButton) {
-        String currentUserId = auth.getCurrentUser().getUid();
+        String currentUserId = auth.getCurrentUser().getEmail();
         DocumentReference currentUserRef = firestore.collection("users").document(currentUserId);
 
         currentUserRef.update("following", FieldValue.arrayUnion(followedUserId))
@@ -100,7 +100,7 @@ public class FeedActivity extends AppCompatActivity {
                     topTrackArtist2.setText(topTrackArtists.get(1));
                     topTrack3.setText("#3: " + topTracks.get(2));
                     topTrackArtist3.setText(topTrackArtists.get(2));
-                    followButton.setOnClickListener(v -> followUser(documentSnapshot.getId(), followButton));
+                    followButton.setOnClickListener(v -> followUser(usernameString, followButton));
 
                     scrollContentLayout.addView(cardView);
                 }
