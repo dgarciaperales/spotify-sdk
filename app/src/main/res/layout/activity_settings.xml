@@ -31,7 +31,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_title" />
 
-    <!-- Delete Account Button -->
+
+    <!-- change email Button -->
+
+    <Button
+        android:id="@+id/change_email"
+        android:layout_width="180dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="72dp"
+        android:backgroundTint="@color/dark_pink"
+        android:text="Change Email"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/update_profile" />
+
     <Button
         android:id="@+id/delete_account"
         android:layout_width="180dp"
@@ -39,7 +54,7 @@
         android:backgroundTint="@color/dark_pink"
         android:text="@string/delete_account"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@+id/update_profile"
+        app:layout_constraintTop_toBottomOf="@+id/change_email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/log_out" />
@@ -61,43 +76,38 @@
         android:id="@+id/navigation_buttons"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="horizontal"
         android:background="@color/light_green"
+        android:orientation="horizontal"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageButton
             android:id="@+id/wrapped_btn"
             android:layout_width="125dp"
             android:layout_height="48dp"
-            android:src="@drawable/home"
+            android:contentDescription="@string/home_description"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/home_description"/>
+            android:src="@drawable/home" />
 
         <ImageButton
             android:id="@+id/feed_btn"
             android:layout_width="125dp"
             android:layout_height="48dp"
-            android:src="@drawable/feed"
+            android:contentDescription="@string/feed_description"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/feed_description" />
+            android:src="@drawable/feed" />
 
         <ImageButton
             android:id="@+id/settings_btn"
             android:layout_width="125dp"
             android:layout_height="48dp"
-            android:src="@drawable/setting"
+            android:contentDescription="@string/settings_description"
             android:scaleType="fitCenter"
-            android:contentDescription="@string/settings_description"/>
+            android:src="@drawable/setting" />
 
-        <EditText
-            android:id="@+id/new_email_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter New Email"
-            android:inputType="textEmailAddress"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
