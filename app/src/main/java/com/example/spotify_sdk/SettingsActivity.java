@@ -1,6 +1,9 @@
 package com.example.spotify_sdk;
 import android.text.InputType;
 import android.widget.Toast;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.Map;
+import java.util.HashMap;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
@@ -106,6 +109,14 @@ public class SettingsActivity extends AppCompatActivity {
                                                     // Email verification sent successfully
                                                     // Notify user to check their email for verification link
                                                     Toast.makeText(getApplicationContext(), "Verification email sent. Please check your email.", Toast.LENGTH_SHORT).show();
+
+                                                    // Create a new document in Firestore
+                                                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+                                                    Map<String, Object> userData = new HashMap<>();
+                                                    userData.put("email", newEmailAddress);
+                                                    firestore.collection("users").document(currentUser.getUid()).set(userData)
+                                                            .addOnSuccessListener(aVoid -> Log.d("SettingsActivity", "DocumentSnapshot successfully written"))
+                                                            .addOnFailureListener(e -> Log.w("SettingsActivity", "Error writing document", e));
                                                 } else {
                                                     // Failed to send verification email
                                                     // Handle error
@@ -131,6 +142,7 @@ public class SettingsActivity extends AppCompatActivity {
             // Show the AlertDialog
             builder.show();
         });
+
 
         //delete account functionality -->
         Button deleteAccount = findViewById(R.id.delete_account);
