@@ -132,62 +132,6 @@ public class SettingsActivity extends AppCompatActivity {
             builder.show();
         });
 
-
-
-
-
-        /*
-        Button resetEmail = findViewById(R.id.reset_email);
-        resetEmail.setOnClickListener(v -> {
-            if (currentUser != null && currentUser.getEmail() != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Enter New Email");
-                final EditText input = new EditText(this);
-                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                builder.setView(input);
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String newEmailAddress = input.getText().toString().trim();
-                        if (!isValidEmail(newEmailAddress)) {
-                            Toast.makeText(SettingsActivity.this, "Invalid email address", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        currentUser.verifyBeforeUpdateEmail(newEmailAddress)
-                                .addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        // Email address verification successful, proceed with updating
-                                        currentUser.updateEmail(newEmailAddress)
-                                                .addOnCompleteListener(emailUpdateTask -> {
-                                                    if (emailUpdateTask.isSuccessful()) {
-                                                        Log.d("RESET EMAIL", "Email updated to: " + newEmailAddress);
-                                                    } else {
-                                                        Log.e("RESET EMAIL", "Failed to update email.", emailUpdateTask.getException());
-                                                    }
-                                                });
-                                    } else {
-                                        // Email address verification failed
-                                        Log.e("RESET EMAIL", "Failed to verify email address.", task.getException());
-                                        Toast.makeText(SettingsActivity.this, "Failed to verify email address", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            } else {
-                Log.e("RESET EMAIL", "User is not signed in or does not have an email address.");
-            }
-        });
-            */
-
         //delete account functionality -->
         Button deleteAccount = findViewById(R.id.delete_account);
         deleteAccount.setOnClickListener(v -> {
