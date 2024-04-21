@@ -1,6 +1,9 @@
 package com.example.spotify_sdk;
 import android.text.InputType;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Map;
 import java.util.HashMap;
@@ -21,10 +24,13 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 
 public class SettingsActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
+
+    private FirebaseFirestore firestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        firestore = FirebaseFirestore.getInstance();
 
         //navigation to home/wrapped page
         ImageButton wrappedButton = findViewById(R.id.wrapped_btn);
@@ -80,6 +87,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button changeEmailButton = findViewById(R.id.change_email);
         changeEmailButton.setOnClickListener(v -> {
             // Create an EditText dialog for user input
+            final String oldEmail = currentUser.getEmail();
             final EditText input = new EditText(SettingsActivity.this);
             input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
@@ -109,14 +117,37 @@ public class SettingsActivity extends AppCompatActivity {
                                                     // Email verification sent successfully
                                                     // Notify user to check their email for verification link
                                                     Toast.makeText(getApplicationContext(), "Verification email sent. Please check your email.", Toast.LENGTH_SHORT).show();
+                                                    Log.d("Old Email", oldEmail);
+                                                    firestore.collection("users").document(oldEmail).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                            if(documentSnapshot.exists()){
+                                                                HashMap<String, Object> oldUserData = new HashMap<String, Object>(documentSnapshot.getData());
+                                                                firestore.collection("users").document(newEmailAddress).set(oldUserData)
+                                                                        .addOnSuccessListener(aVoid -> {
+                                                                            // Main document was successfully written
+                                                                            Log.d("SettingsActivity", "DocumentSnapshot successfully written");
 
-                                                    // Create a new document in Firestore
-                                                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-                                                    Map<String, Object> userData = new HashMap<>();
-                                                    userData.put("email", newEmailAddress);
-                                                    firestore.collection("users").document(currentUser.getUid()).set(userData)
-                                                            .addOnSuccessListener(aVoid -> Log.d("SettingsActivity", "DocumentSnapshot successfully written"))
-                                                            .addOnFailureListener(e -> Log.w("SettingsActivity", "Error writing document", e));
+                                                                            // Now, proceed to copy the 'wrapped' subcollection
+                                                                            firestore.collection("users").document(oldEmail).collection("wrapped")
+                                                                                    .get()
+                                                                                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                                                                                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                                                                                            firestore.collection("users").document(newEmailAddress).collection("wrapped")
+                                                                                                    .document(document.getId())
+                                                                                                    .set(document.getData())
+                                                                                                    .addOnSuccessListener(aVoid1 -> Log.d("Firestore", "Document successfully copied: " + document.getId()))
+                                                                                                    .addOnFailureListener(e -> Log.e("Firestore", "Error copying document: " + document.getId(), e));
+                                                                                        }
+                                                                                        Log.d("Firestore", "All documents initiated for copying");
+                                                                                    })
+                                                                                    .addOnFailureListener(e -> Log.e("Firestore", "Error retrieving subcollection", e));
+                                                                        })
+                                                                        .addOnFailureListener(e -> Log.e("SettingsActivity", "Error writing document", e));
+
+                                                            }
+                                                        }
+                                                    });
                                                 } else {
                                                     // Failed to send verification email
                                                     // Handle error
